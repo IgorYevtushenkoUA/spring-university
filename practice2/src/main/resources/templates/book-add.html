@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="">
+        <form action="/add" method="post" th:object="${newBook}">
+            <div class="container">
+                <div class="row mt-5">
+                    <label class="col-4">Enter ISBN : </label>
+                    <input class="col-8" type="text" name="ISBN" placeholder="ISBN" th:object="${newBook.ISBN}">
+                </div>
+                <div class="row mt-2">
+                    <label class="col-4">Enter Book : </label>
+                    <input class="col-8" type="text" name="book" placeholder="Book" th:object="${newBook.book}">
+                </div>
+                <div class="row mt-2">
+                    <label class="col-4">Enter Author : </label>
+                    <input class="col-8" type="text" name="author" placeholder="Author" th:object="${newBook.author}">
+                </div>
+            </div>
+            <div class="col-12 d-flex justify-content-center mt-3">
+                <button type="submit" class="btn btn-primary">Add</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

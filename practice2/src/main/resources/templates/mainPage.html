@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+</head>
+</head>
+<body>
+
+<div class="container-fluid mt-5">
+    <div class="books-list d-flex justify-content-center mt-3" th:each="book:${books}">
+        <div class="book col-6 col-md-4 bg-warning">
+            <p th:text="${book.getISBN()}">ISBN :</p>
+            <p th:text="${book.getBook()}">Book :</p>
+            <p th:text="${book.getAuthor()}">Author :</p>
+        </div>
+    </div>
+    <div class="col-12 d-flex justify-content-center mt-3">
+        <a class="btn btn-primary" href="/add">Add new book</a>
+    </div>
+</div>
+</body>
+</html>
