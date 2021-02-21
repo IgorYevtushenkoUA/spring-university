@@ -17,37 +17,36 @@
             <form id="bookForm">
                 <div class="row">
                     <label class="col-4" for="isbn">ISBN : </label>
-                    <input class="col-8" id="isbn" name="isbn" type="text">
+                    <input class="col-8 form-control" id="isbn" name="isbn" type="text">
                 </div>
-                <div class="row">
-                    <label for="bookName" class="col-4">NAME : </label>
-                    <input id="bookName"  class="col-8" name="bookName" type="text">
+                <div class="row mt-2">
+                    <label for="bookName" class="col-4 ">NAME : </label>
+                    <input id="bookName" class="col-8 form-control" name="bookName" type="text">
                 </div>
-                <div class="row">
+                <div class="row mt-2">
                     <label class="col-4" for="author">Author : </label>
-                    <input class="col-8" id="author" name="author" type="text">
+                    <input class="col-8 form-control" id="author" name="author" type="text">
                 </div>
-                <button type="submit" id="addBookBtn" class="btn btn-primary align-self-center">Create book</button>
+                <button type="submit mt-2" id="addBookBtn" class="btn btn-primary align-self-center">Create book
+                </button>
             </form>
 
         </div>
 
         <div class="col-6">
-            <div>
-                <input type="text" id="searchBookName">
-                <button id="searchBooksBtn" type="button" class="btn btn-primary">Search</button>
+            <div class="row ml-1">
+                <input type="text" id="searchBookName" class="form-control col-7 ">
+                <button id="searchBooksBtn" type="button" class="btn btn-primary ml-1 col-2">Search</button>
+                <button id="getAllBooksBtn" type="button" class="btn btn-primary ml-1 col-2">Show all</button>
+
             </div>
 
-            <div>
-                <button id="getAllBooksBtn" type="button" class="btn btn-primary">Show all</button>
-            </div>
-
-            <div id="table">
+            <div id="table" class=" mt-2">
                 <table border="1" class="table">
                     <thead>
-                    <th scope="col" >ISBN</th>
-                    <th scope="col" >NAME</th>
-                    <th scope="col" >AUTHOR</th>
+                    <th scope="col">ISBN</th>
+                    <th scope="col">NAME</th>
+                    <th scope="col">AUTHOR</th>
                     </thead>
                     <tbody class="booksTable" id="booksTable">
                     </tbody>
@@ -72,11 +71,18 @@
 
     function getBook() {
         return {
-            isbn: '1',
-            bookName: '1',
-            author: '1'
+            isbn: $("#isbn").val(),
+            bookName: $('#bookName').val(),
+            author: $('#author').val()
         }
     }
+
+    function doEmptyInput() {
+        $("#isbn").val("");
+        $('#bookName').val("");
+        $('#author').val("");
+    }
+
 
     function addBook2Table(book) {
         doEmpty('emptyBook');
@@ -88,6 +94,7 @@
             "<td>" + book.author + "</td>" +
             "</tr>"
         );
+        doEmptyInput();
         console.log("was added book")
     }
 
@@ -127,11 +134,7 @@
         $('#bookForm').submit(function (event) {
             event.preventDefault();
 
-            let newBook = {
-                isbn: $("#isbn").val(),
-                bookName: $("#bookName").val(),
-                author: $("#author").val()
-            }
+            let newBook = getBook()
 
             $.ajax({
                 type: 'POST',
