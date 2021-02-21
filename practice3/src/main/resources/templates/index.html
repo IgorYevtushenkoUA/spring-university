@@ -1,48 +1,188 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 </head>
 <body>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
-<div class="container">
+<div id="postResultDiv" align="center"></div>
+
+<div class="container mt-4">
     <div class="row">
-        <div class="col-4">
+        <div class="col-6">
 
-            <form action="">
-                <p>ISBN : </p>
-                <input type="text">
-                <input type="text">
-                <input type="text">
-                <button>Create book</button>
+            <form id="bookForm">
+                <div class="row">
+                    <label class="col-4" for="isbn">ISBN : </label>
+                    <input class="col-8" id="isbn" name="isbn" type="text">
+                </div>
+                <div class="row">
+                    <label for="bookName" class="col-4">NAME : </label>
+                    <input id="bookName"  class="col-8" name="bookName" type="text">
+                </div>
+                <div class="row">
+                    <label class="col-4" for="author">Author : </label>
+                    <input class="col-8" id="author" name="author" type="text">
+                </div>
+                <button type="submit" id="addBookBtn" class="btn btn-primary align-self-center">Create book</button>
             </form>
 
         </div>
 
-        <div class="col-8">
+        <div class="col-6">
             <div>
-                <input type="text">
-                <button>Search</button>
+                <input type="text" id="searchBookName">
+                <button id="searchBooksBtn" type="button" class="btn btn-primary">Search</button>
             </div>
 
             <div>
-                <button>Show all</button>
+                <button id="getAllBooksBtn" type="button" class="btn btn-primary">Show all</button>
             </div>
 
-            <div>
-                <ul>
-                    <li>
-                        list of books
-                    </li>
-                </ul>
+            <div id="table">
+                <table border="1" class="table">
+                    <thead>
+                    <th scope="col" >ISBN</th>
+                    <th scope="col" >NAME</th>
+                    <th scope="col" >AUTHOR</th>
+                    </thead>
+                    <tbody class="booksTable" id="booksTable">
+                    </tbody>
+                </table>
+                <div id="emptyBook" class="emptyBook">
+
+                </div>
             </div>
 
         </div>
 
     </div>
 </div>
+
+
+<script>
+
+    function doEmpty(id) {
+        let $obj = $('#' + id);
+        $obj.empty();
+    }
+
+    function getBook() {
+        return {
+            isbn: '1',
+            bookName: '1',
+            author: '1'
+        }
+    }
+
+    function addBook2Table(book) {
+        doEmpty('emptyBook');
+        let $books = $('#booksTable');
+        $books.append(
+            "<tr scope=\"row\">" +
+            "<td>" + book.isbn + "</td>" +
+            "<td>" + book.bookName + "</td>" +
+            "<td>" + book.author + "</td>" +
+            "</tr>"
+        );
+        console.log("was added book")
+    }
+
+    function fillEmptyBookTable() {
+        doEmpty('booksTable');
+        let $emptyBook = $('#emptyBook');
+        $emptyBook.append("<label>Book not found</label>")
+    }
+
+    function fillBookTable(response) {
+        doEmpty('booksTable')
+        for (let i = 0; i < response.data.length; i++) {
+            addBook2Table(response.data[i]);
+        }
+        console.log("fillBookTable")
+        console.log(response)
+    }
+
+    function updateBookList() {
+        $.ajax({
+            type: 'GET',
+            url: '/get-books',
+            success: function (response) {
+                fillBookTable(response)
+            }
+        });
+        console.log("updateBookList")
+    }
+
+    $(function () {
+        $(document).ready(function () {
+            console.log('loading')
+            updateBookList();
+        });
+
+
+        $('#bookForm').submit(function (event) {
+            event.preventDefault();
+
+            let newBook = {
+                isbn: $("#isbn").val(),
+                bookName: $("#bookName").val(),
+                author: $("#author").val()
+            }
+
+            $.ajax({
+                type: 'POST',
+                contentType: "application/json",
+                url: '/add-book',
+                data: JSON.stringify(newBook),
+                dataType: 'json',
+                success: function (response) {
+                    console.log("add book")
+                    addBook2Table(response);
+                    updateBookList();
+                },
+                error: function () {
+                    console.log("error with adding : " + $("#isbn").val())
+                }
+            })
+        });
+
+        $('#getAllBooksBtn').click(function () {
+            $.ajax({
+                type: 'Get',
+                url: '/get-books',
+                dataType: 'json',
+                success: function (response) {
+                    updateBookList();
+                }
+            })
+        })
+
+        $('#searchBooksBtn').click(function () {
+            $.ajax({
+                type: 'GET',
+                url: '/search-books',
+                dataType: 'json',
+                data: {
+                    searchName: $("#searchBookName").val()
+                },
+                success: function (response) {
+                    response.data.length == 0
+                        ? fillEmptyBookTable()
+                        : fillBookTable(response)
+                },
+                error: function (response) {
+                    console.log("can not search : " + $("#searchBookName").val())
+                }
+            })
+        })
+    })
+
+
+</script>
 
 
 </body>
