@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.io.Serializable;
 
 @EqualsAndHashCode
 @Embeddable
@@ -12,7 +13,7 @@ import javax.persistence.Embeddable;
 @Getter
 @Setter
 @ToString
-public class AuthorHasBookId {
+public class AuthorHasBookId implements Serializable {
 
     @Column(name = "author_id")
     private Integer authorId;
