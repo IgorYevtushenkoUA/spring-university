@@ -12,18 +12,18 @@
 
     <div class="main-block">
 
-        <div class="filter">
-            filter panel
-        </div>
-
-        <div class="author-block" th:each="author : ${authors}">
-            <div class="author">
-                <img src="./images/author.png" alt="author-image">
-                <h3 th:text="${author.getName()}"></h3>
+        <!--        <div class="filter">-->
+        <!--            filter panel-->
+        <!--        </div>-->
+        <div class="row">
+            <div class="authors col-4" th:each="author : ${authors}">
+                <div class="author">
+                    <img src="./images/author.png" alt="author-image">
+                    <h3 th:text="${author.getName()}"></h3>
+                </div>
+                <button class="btn"><a th:href="@{/authors/{id}(id=${author.getAuthorId()})}">more info</a></button>
             </div>
-            <button class="btn"><a th:href="@{/authors/{id}(id=${author.getAuthorId()})}">more info</a></button>
         </div>
-
     </div>
 
 </div>

@@ -16,15 +16,15 @@
         <div class="filter">
             filter panel
         </div>
-
-        <div class="book-block" th:each="book : ${books}">
-            <div class="book">
-                <img src="./images/book.png" alt="books-image">
-                <h3 th:text="${book.getName()}"></h3>
+        <div class="row">
+            <div class="books col-4" th:each="book : ${books}">
+                <div class="book">
+                    <img src="./images/book.png" alt="books-image">
+                    <h3 th:text="${book.getName()}"></h3>
+                </div>
+                <button class="btn"><a th:href="@{/books/{id}(id=${book.getBookId()})}">more info</a></button>
             </div>
-            <button class="btn"><a th:href="@{/books/{id}(id=${book.getBookId()})}">more info</a></button>
         </div>
-
     </div>
 
 </div>

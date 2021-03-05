@@ -12,26 +12,29 @@
 
     <div class="main-block">
         <div class="books-block">
-            <p>Books</p>
-            <div class="books" th:each="book, iterator : ${books}" , th:if="${iterator.index}<3">
-                <div class="book">
+            <p class="h4 text-muted"><strong>Books</strong></p>
+            <div class="row">
+                <div class="books col-4" th:each="book, iterator : ${books}" , th:if="${iterator.index}<3">
+                    <div class="book ">
 
-                    <img src="./images/book.png" alt="books-image">
-                    <h3 th:text="${book.getName()} "></h3>
+                        <img src="./images/book.png" alt="books-image">
+                        <h3 th:text="${book.getName()} "></h3>
 
+                    </div>
                 </div>
             </div>
             <button class="btn"><a href="/books">More Info</a></button>
         </div>
 
         <div class="author-block">
-            <p>Authors</p>
-            <div class="author" th:each="author, iterator : ${authors}" , th:if="${iterator.index}<3">
-                <div class="author">
+            <p class="h4 text-muted"><strong>Authors</strong></p>
+            <div class="row">
+                <div class="authors col-4" th:each="author, iterator : ${authors}" , th:if="${iterator.index}<3">
+                    <div class="author">
 
-                    <img src="./images/author.png" alt="author-image">
-                    <h3 th:text="${author.getName()}"></h3>
-
+                        <img src="./images/author.png" alt="author-image">
+                        <h3 th:text="${author.getName()}"></h3>
+                    </div>
                 </div>
             </div>
             <button class="btn"><a href="/authors">More Info</a></button>
