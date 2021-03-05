@@ -25,7 +25,7 @@ public class BookService {
      * get all books
      */
     public List<BookEntity> getAllBooks() {
-        bookDao.getAllBooks();
+        return bookDao.getAllBooks();
     }
 
     /**
