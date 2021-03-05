@@ -15,6 +15,11 @@ public class AuthorService {
     private AuthorDaoImpl authorDao;
 
     @Transactional
+    public void addNewAuthor(String name){
+        authorDao.addNewAuthor(name);
+    }
+
+    @Transactional
     public List<AuthorEntity> getAllAuthor() {
         return authorDao.getAllAuthor();
     }

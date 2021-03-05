@@ -3,7 +3,6 @@ package com.example.hw6.dao;
 import com.example.hw6.entity.AuthorEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -12,6 +11,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuthorDaoImpl {
     private final EntityManager entityManager;
+
+    /** add new Author*/
+    public void addNewAuthor(String name){
+        AuthorEntity author = new AuthorEntity();
+        author.setName(name);
+        entityManager.merge(author);
+    }
 
     /**
      * get all author
