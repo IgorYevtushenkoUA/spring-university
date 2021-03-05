@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container">
+    <div th:insert="navbar"></div>
+
+    <div class="main-block">
+        <div class="books-block">
+            <p>Books</p>
+            <div class="books" th:each="book, iterator : ${books}" , th:if="${iterator.index}<3">
+                <div class="book">
+
+                    <img src="./images/book.png" alt="books-image">
+                    <h3 th:text="${book.getName()} "></h3>
+
+                </div>
+            </div>
+            <button><a href="/books">More Info</a></button>
+        </div>
+
+        <div class="author-block">
+            <p>Authors</p>
+            <div class="author" th:each="author, iterator : ${authors}" , th:if="${iterator.index}<3">
+                <div class="author">
+
+                    <img src="./images/author.png" alt="author-image">
+                    <h3 th:text="${author.getName()}"></h3>
+
+                </div>
+            </div>
+            <button><a href="/authors">More Info</a></button>
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+</html>

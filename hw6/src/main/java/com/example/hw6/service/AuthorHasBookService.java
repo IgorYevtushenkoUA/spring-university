@@ -5,6 +5,9 @@ import com.example.hw6.entity.AuthorHasBookEntity;
 import com.example.hw6.entity.AuthorHasBookId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class AuthorHasBookService {
@@ -15,6 +18,7 @@ public class AuthorHasBookService {
     /**
      * edit
      */
+    @Transactional
     public void editAuthorHasBook(int authorId, int oldBookId, int newBookId) {
         authorHasBookDao.editAuthorHasBook(authorId, oldBookId, newBookId);
     }
@@ -22,6 +26,7 @@ public class AuthorHasBookService {
     /**
      * create
      */
+    @Transactional
     public void createAuthorHasBook(int authorId, int bookId) {
         authorHasBookDao.createAuthorHasBook(authorId, bookId);
     }
@@ -29,8 +34,17 @@ public class AuthorHasBookService {
     /**
      * delete
      */
+    @Transactional
     public void deleteAuthorHasBook(int authorId, int bookId) {
         authorHasBookDao.createAuthorHasBook(authorId, bookId);
+    }
+
+    /**
+     * get books author by bookID
+     */
+    @Transactional
+    public List getAuthorsByBookId(int bookId) {
+        return authorHasBookDao.getAuthorsByBookId(bookId);
     }
 
 }

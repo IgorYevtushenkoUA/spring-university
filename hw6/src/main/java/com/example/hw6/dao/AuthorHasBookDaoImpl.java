@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -42,5 +43,21 @@ public class AuthorHasBookDaoImpl {
                 .setParameter("authorId", authorId)
                 .setParameter("bookId", bookId)
                 .executeUpdate();
+    }
+
+    /**
+     * get books author by bookID
+     * @return
+     */
+    public List getAuthorsByBookId(int bookId) {
+        System.out.println("getAuthorNameByBookId");
+        return entityManager.createQuery("SELECT a " +
+                "FROM AuthorEntity a " +
+                "WHERE a.authorId IN " +
+                    "(SELECT ahb " +
+                    "FROM AuthorHasBookEntity ahb " +
+                    "WHERE ahb.authorHasBookId.bookId=:bookId)")
+                .setParameter("bookId", bookId)
+                .getResultList();
     }
 }

@@ -24,6 +24,7 @@ public class BookService {
     /**
      * get all books
      */
+    @Transactional
     public List<BookEntity> getAllBooks() {
         return bookDao.getAllBooks();
     }
@@ -32,6 +33,7 @@ public class BookService {
      * get book by id
      */
     // todo may can be mistakes check
+    @Transactional
     public BookEntity getBookById(int bookId) {
         return bookDao.getBookById(bookId);
     }
@@ -39,6 +41,7 @@ public class BookService {
     /**
      * edit book
      */
+    @Transactional
     public void editBook(BookEntity book) {
         bookDao.editBook(book);
     }
@@ -46,6 +49,7 @@ public class BookService {
     /**
      * get books by name
      */
+    @Transactional
     public List<BookEntity> getBookByName(String name) {
         return bookDao.getBookByName(name);
     }
@@ -53,12 +57,14 @@ public class BookService {
     /**
      * get book by  isbn
      */
+    @Transactional
     public BookEntity getBookByIsbn(String isbn) {
 
         return bookDao.getBookByIsbn(isbn);
     }
 
     /** delete book by ID*/
+    @Transactional
     public void deleteBookById(int bookId) {
         bookDao.deleteBookById(bookId);
     }
