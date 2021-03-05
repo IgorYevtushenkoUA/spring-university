@@ -1,5 +1,6 @@
 package com.example.hw6.controller;
 
+import com.example.hw6.entity.AuthorEntity;
 import com.example.hw6.service.AuthorHasBookService;
 import com.example.hw6.service.AuthorService;
 import com.example.hw6.service.BookService;
@@ -44,15 +45,15 @@ public class MainController {
         return "books";
     }
 
-    @GetMapping("/books/1")
-//    public String book(Model model, @PathVariable int id){
-    public String book(Model model){
+    @GetMapping("/books/{id}")
+    public String book(Model model, @PathVariable int id) {
 
-//        model.addAttribute("book", bookService.getBookById(1));
-//        model.addAttribute("author", authorHasBookService.getAuthorsByBookId(1));
+        System.out.println(bookService.getAllBooks());
+        System.out.println(authorHasBookService.getAuthorsByBookId(id));
+        model.addAttribute("authors", authorHasBookService.getAuthorsByBookId(id));
+        model.addAttribute("book", bookService.getBookById(id));
         return "book";
     }
-
 
 
 }

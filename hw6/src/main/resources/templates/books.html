@@ -19,7 +19,7 @@
 
         <div class="book-block" th:each="book : ${books}">
             <div class="book">
-                <img src="./images/book.png" alt="author-image">
+                <img src="./images/book.png" alt="books-image">
                 <h3 th:text="${book.getName()}"></h3>
             </div>
             <button class="btn"><a th:href="@{/books/{id}(id=${book.getBookId()})}">more info</a></button>

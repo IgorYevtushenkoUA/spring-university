@@ -1,7 +1,9 @@
 package com.example.hw6.dao;
 
+import com.example.hw6.entity.AuthorEntity;
 import com.example.hw6.entity.AuthorHasBookEntity;
 import com.example.hw6.entity.AuthorHasBookId;
+import com.example.hw6.entity.BookEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -47,16 +49,18 @@ public class AuthorHasBookDaoImpl {
 
     /**
      * get books author by bookID
+     *
      * @return
      */
     public List getAuthorsByBookId(int bookId) {
-        System.out.println("getAuthorNameByBookId");
-        return entityManager.createQuery("SELECT a " +
-                "FROM AuthorEntity a " +
-                "WHERE a.authorId IN " +
-                    "(SELECT ahb " +
-                    "FROM AuthorHasBookEntity ahb " +
-                    "WHERE ahb.authorHasBookId.bookId=:bookId)")
+
+        return entityManager.createQuery(
+                "SELECT a FROM AuthorEntity a " +
+                   "WHERE a.authorId in " +
+                        "(SELECT ahb.authorHasBookId.authorId " +
+                        "FROM AuthorHasBookEntity ahb " +
+                        "WHERE ahb.authorHasBookId.bookId = :bookId )",
+                AuthorEntity.class)
                 .setParameter("bookId", bookId)
                 .getResultList();
     }
