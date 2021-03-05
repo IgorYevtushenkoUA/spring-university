@@ -48,11 +48,17 @@ public class MainController {
     @GetMapping("/books/{id}")
     public String book(Model model, @PathVariable int id) {
 
-        System.out.println(bookService.getAllBooks());
-        System.out.println(authorHasBookService.getAuthorsByBookId(id));
         model.addAttribute("authors", authorHasBookService.getAuthorsByBookId(id));
         model.addAttribute("book", bookService.getBookById(id));
         return "book";
+    }
+
+    @GetMapping("/authors/{id}")
+    public String author(Model model, @PathVariable int id) {
+
+        model.addAttribute("author", authorService.getAuthorById(id));
+        model.addAttribute("books", authorHasBookService.getBooksByAuthorId(id));
+        return "author";
     }
 
 

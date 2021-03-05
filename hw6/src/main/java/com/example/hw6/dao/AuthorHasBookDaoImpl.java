@@ -64,4 +64,19 @@ public class AuthorHasBookDaoImpl {
                 .setParameter("bookId", bookId)
                 .getResultList();
     }
+
+    /** get books by authorId*/
+    public List getBooksByAuthorId(int authorId) {
+
+        return entityManager.createQuery(
+                "SELECT b FROM BookEntity b " +
+                        "WHERE b.bookId in " +
+                        "(SELECT ahb.authorHasBookId.bookId " +
+                        "FROM AuthorHasBookEntity ahb " +
+                        "WHERE ahb.authorHasBookId.authorId = :authorId )",
+                BookEntity.class)
+                .setParameter("authorId", authorId)
+                .getResultList();
+    }
+
 }

@@ -24,7 +24,7 @@ public class Hw6Application {
 
 	public static void authorHasBookTest(ApplicationContext applicationContext){
 		AuthorHasBookService authorHasBookService = applicationContext.getBean(AuthorHasBookService.class);
-		System.out.println(authorHasBookService.getAuthorsByBookId(1));
+		System.out.println(authorHasBookService.getBooksByAuthorId(1));
 	}
 
 }

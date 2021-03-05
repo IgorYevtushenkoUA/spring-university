@@ -47,4 +47,11 @@ public class AuthorHasBookService {
         return authorHasBookDao.getAuthorsByBookId(bookId);
     }
 
+    /**
+     * get books by authorId
+     */
+    @Transactional
+    public List getBooksByAuthorId(int authorId) {
+        return authorHasBookDao.getBooksByAuthorId(authorId);
+    }
 }

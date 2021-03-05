@@ -10,6 +10,17 @@
 <div class="container">
     <div th:insert="navbar"></div>
 
+    <div class="author">
+        <img src="./images/author.png" alt="author-image">
+
+        <h3 th:text="${author.getName()}"></h3>
+        <div classes="books" th:each="book : ${books}">
+            <a th:text="${book.getName()}",
+               th:href="@{/books/{id}(id=${book.getBookId()})}"></a>
+        </div>
+    </div>
+
 </div>
+
 </body>
 </html>
