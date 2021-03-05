@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @Controller
@@ -28,5 +29,30 @@ public class MainController {
         model.addAttribute("authors", authorService.getAllAuthor());
         return "main";
     }
+
+    @GetMapping("/authors")
+    public String authors(Model model) {
+
+        model.addAttribute("authors", authorService.getAllAuthor());
+        return "authors";
+    }
+
+    @GetMapping("/books")
+    public String books(Model model) {
+
+        model.addAttribute("books", bookService.getAllBooks());
+        return "books";
+    }
+
+    @GetMapping("/books/1")
+//    public String book(Model model, @PathVariable int id){
+    public String book(Model model){
+
+//        model.addAttribute("book", bookService.getBookById(1));
+//        model.addAttribute("author", authorHasBookService.getAuthorsByBookId(1));
+        return "book";
+    }
+
+
 
 }
