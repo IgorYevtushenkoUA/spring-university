@@ -1,6 +1,7 @@
 package com.example.hw6.dao;
 
 import com.example.hw6.entity.AuthorEntity;
+import com.example.hw6.entity.BookEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -25,6 +26,14 @@ public class AuthorDaoImpl {
     public List<AuthorEntity> getAllAuthor() {
         System.out.println("getAllAuthor");
         return entityManager.createQuery("SELECT a FROM AuthorEntity a", AuthorEntity.class)
+                .getResultList();
+    }
+
+    /**get author by name*/
+    public List<AuthorEntity> getAuthorsByName(String name){
+        System.out.println("getAuthorsByName");
+        return entityManager.createQuery("SELECT a FROM AuthorEntity a WHERE a.name LIKE :name", AuthorEntity.class)
+                .setParameter("name", '%'+name+'%')
                 .getResultList();
     }
 

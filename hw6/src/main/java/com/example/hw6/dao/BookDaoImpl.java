@@ -52,7 +52,7 @@ public class BookDaoImpl {
     /** get books by name */
     public List<BookEntity> getBookByName(String name){
         System.out.println("getBookByName");
-        return entityManager.createQuery("SELECT b FROM BookEntity b WHERE b.name LIKE name", BookEntity.class)
+        return entityManager.createQuery("SELECT b FROM BookEntity b WHERE b.name LIKE :name", BookEntity.class)
                 .setParameter("name", '%'+name+'%')
                 .getResultList();
     }

@@ -34,16 +34,33 @@ public class MainController {
     }
 
     @GetMapping("/authors")
-    public String authors(Model model) {
+    public String authorsGet(Model model) {
 
+        model.addAttribute("authorName", new String("have name----"));
         model.addAttribute("authors", authorService.getAllAuthor());
         return "authors";
     }
 
+    @PostMapping("/authors")
+    public String authorsPost(@ModelAttribute("authorName") String authorName,
+                              Model model) {
+        model.addAttribute("authorName", authorName);
+        model.addAttribute("authors", authorService.getAuthorsByName(authorName));
+        return "authors";
+    }
+
     @GetMapping("/books")
-    public String books(Model model) {
-        System.out.println("GET MAPPING books");
+    public String booksGet(Model model) {
         model.addAttribute("books", bookService.getAllBooks());
+        model.addAttribute("bookName", new String());
+        return "books";
+    }
+
+    @PostMapping("/books")
+    public String booksPost(@ModelAttribute("bookName") String bookName,
+                              Model model) {
+        model.addAttribute("bookName", bookName);
+        model.addAttribute("books", bookService.getBookByName(bookName));
         return "books";
     }
 
@@ -75,7 +92,6 @@ public class MainController {
     public String createBookPost(@ModelAttribute Book book,
                                  Model model) {
         model.addAttribute("book", book);
-        System.out.println("BOOK : " + book.toString());
         // тут робити пост запити
         BookEntity newBook = new BookEntity();
         newBook.setIsbn(book.getIsbn());
@@ -97,5 +113,4 @@ public class MainController {
 
         return "redirect:/books";
     }
-
 }

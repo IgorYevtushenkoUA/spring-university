@@ -14,7 +14,13 @@
     <div class="main-block">
 
         <div class="filter">
-            filter panel
+            <form action="/books" method="post">
+                <div>
+                    <lable>Enter book name :</lable>
+                    <input type="text" name="bookName" placeholder="bookName" th:object="${bookName}">
+                </div>
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
         </div>
         <div class="row">
             <div class="books col-4" th:each="book : ${books}">

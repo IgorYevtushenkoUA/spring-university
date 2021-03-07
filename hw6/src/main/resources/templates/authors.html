@@ -12,9 +12,15 @@
 
     <div class="main-block">
 
-        <!--        <div class="filter">-->
-        <!--            filter panel-->
-        <!--        </div>-->
+        <div class="filter">
+            <form action="/authors" method="post">
+                <div>
+                    <lable>Enter author name :</lable>
+                    <input type="text" name="authorName" placeholder="authorName" th:object="${authorName}">
+                </div>
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </div>
         <div class="row">
             <div class="authors col-4" th:each="author : ${authors}">
                 <div class="author">
