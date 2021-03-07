@@ -14,18 +14,23 @@ public class BookDaoImpl {
     private final EntityManager entityManager;
 
     /** add new book */
-    public void addNewBook(String isbn, String name, String description){
+    public BookEntity addNewBook(String isbn, String name, String description){
         System.out.println("addNewBook");
         BookEntity book = new BookEntity();
         book.setIsbn(isbn);
         book.setName(name);
         book.setDescription(description);
-        entityManager.merge(book);
+        return entityManager.merge(book);
+    }
+
+    public BookEntity addNewBook(BookEntity bookEntity){
+        System.out.println("addNewBook");
+        return entityManager.merge(bookEntity);
     }
 
     /** get all books */
     public List<BookEntity> getAllBooks(){
-        System.out.println("addNewBook");
+        System.out.println("getAllBooks");
         return entityManager.createQuery("SELECT b FROM BookEntity b", BookEntity.class)
                 .getResultList();
     }

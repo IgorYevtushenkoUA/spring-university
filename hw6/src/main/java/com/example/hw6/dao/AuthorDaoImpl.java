@@ -13,10 +13,10 @@ public class AuthorDaoImpl {
     private final EntityManager entityManager;
 
     /** add new Author*/
-    public void addNewAuthor(String name){
+    public AuthorEntity addNewAuthor(String name){
         AuthorEntity author = new AuthorEntity();
         author.setName(name);
-        entityManager.merge(author);
+        return entityManager.merge(author);
     }
 
     /**

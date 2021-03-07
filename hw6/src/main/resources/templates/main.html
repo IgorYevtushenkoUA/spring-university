@@ -18,7 +18,8 @@
                     <div class="book ">
 
                         <img src="./images/book.png" alt="books-image">
-                        <h3 th:text="${book.getName()} "></h3>
+                        <h3><a th:text="${book.getName()}",
+                               th:href="@{/books/{id}(id=${book.getBookId()})}"></a></h3>
 
                     </div>
                 </div>
@@ -33,7 +34,8 @@
                     <div class="author">
 
                         <img src="./images/author.png" alt="author-image">
-                        <h3 th:text="${author.getName()}"></h3>
+                        <h3><a th:text="${author.getName()}",
+                               th:href="@{/authors/{id}(id=${author.getAuthorId()})}"></a></h3>
                     </div>
                 </div>
             </div>

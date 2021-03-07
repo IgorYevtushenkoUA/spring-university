@@ -16,9 +16,13 @@ public class BookService {
 
     @Transactional
     /** add new book */
-    public void addNewBook(String isbn, String name, String description) {
-        bookDao.addNewBook(isbn, name, description);
+    public BookEntity addNewBook(String isbn, String name, String description) {
+        return bookDao.addNewBook(isbn, name, description);
+    }
 
+    @Transactional
+    public BookEntity addNewBook(BookEntity bookEntity) {
+        return bookDao.addNewBook(bookEntity);
     }
 
     /**
@@ -63,7 +67,9 @@ public class BookService {
         return bookDao.getBookByIsbn(isbn);
     }
 
-    /** delete book by ID*/
+    /**
+     * delete book by ID
+     */
     @Transactional
     public void deleteBookById(int bookId) {
         bookDao.deleteBookById(bookId);
