@@ -37,10 +37,14 @@ create table role
 create table user
 (
     user_id      integer primary key,
+    role_id      integer     not null,
     name         varchar(32) not null,
     surname      varchar(32) not null,
     password     varchar(32) not null,
     phone_number varchar(32) not null,
+    constraint fk_user_role_id
+        foreign key (role_id)
+            references role (role_id)
 )
 -- table user_has_favourite_book
 create table user_has_favourite_book
@@ -103,12 +107,12 @@ values (6, 5);
 insert into role(name) value ('user')
 insert into role (name) value ('admin')
 -- insert user
-insert into user (name, surname, password, phone_number)
-values ('user', 'user', 'user', '111-11-11');
+insert into user (role_id, name, surname, password, phone_number)
+values (1, 'user', 'user', 'user', '111-11-11');
 insert into user(name, surname, password, phone_number)
-values ('user2', 'surname2', 'user', '222-22-22');
+values (1, 'user2', 'surname2', 'user', '222-22-22');
 insert into user(name, surname, password, phone_number)
-values ('user3', 'surname3', 'user', '333-33-33');
+values (1, 'user3', 'surname3', 'user', '333-33-33');
 -- insert user_has_favourite_book
 insert into user_has_favourite_book(user_id, book_id)
 values (1, 1);
