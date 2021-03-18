@@ -34,10 +34,6 @@ public class AuthorService {
         authorRepository.saveAndFlush(author);
     }
 
-    public void deleteAuthorById(int authorId) {
-        authorRepository.deleteById(authorId);
-    }
-
     public Page<AuthorEntity> findAllAuthorByName(String name, Pageable pageable) {
         return authorRepository.findAllAuthorByName('%' + name + '%', pageable);
     }

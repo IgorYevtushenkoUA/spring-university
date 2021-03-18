@@ -29,8 +29,15 @@ public class MainController {
     @Autowired
     private AuthorService authorService;
 
-//    @Autowired
-//    private AuthorHasBookService authorHasBookService;
+    public void setTotalPage(Model model, Page page) {
+        int totalPages = page.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(0, totalPages - 1)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+    }
 
     @GetMapping("/")
     public String main(Model model, Pageable pageable) {
@@ -46,16 +53,7 @@ public class MainController {
         Page<AuthorEntity> page = authorService.findAllAuthor(pageable);
         model.addAttribute("authorName", new String("have name----"));
         model.addAttribute("page", page);
-        model.addAttribute("pageNum", page.getNumber());
-        model.addAttribute("bookName", new String());
-
-        int totalPages = page.getTotalPages();
-        if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(0, totalPages - 1)
-                    .boxed()
-                    .collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumbers);
-        }
+        setTotalPage(model, page);
         return "authors";
     }
 
@@ -63,27 +61,21 @@ public class MainController {
     public String authorsPost(@PageableDefault(size = 6) Pageable pageable, @ModelAttribute("authorName") String authorName,
                               Model model) {
         model.addAttribute("authorName", authorName);
-        Page<AuthorEntity> page = authorService.findAllAuthorByName(authorName, pageable);
+        Page<AuthorEntity> page = authorName.isEmpty()
+                ? authorService.findAllAuthor(pageable)
+                : authorService.findAllAuthorByName('%' + authorName + '%', pageable);
         model.addAttribute("page", page);
-        model.addAttribute("pageNum", page.getNumber());
+        setTotalPage(model, page);
         return "authors";
     }
 
     @GetMapping("/books")
     public String booksGet(@PageableDefault(size = 6) Pageable pageable, Model model) {
+
         Page<BookEntity> page = bookService.findAllBooks(pageable);
         model.addAttribute("page", page);
-        model.addAttribute("pageNum", page.getNumber());
         model.addAttribute("bookName", new String());
-
-        int totalPages = page.getTotalPages();
-        if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(0, totalPages - 1)
-                    .boxed()
-                    .collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumbers);
-        }
-
+        setTotalPage(model, page);
         return "books";
     }
 
@@ -91,13 +83,17 @@ public class MainController {
     public String booksPost(@PageableDefault(size = 6) Pageable pageable,
                             @ModelAttribute("bookName") String bookName,
                             Model model) {
+
         model.addAttribute("bookName", bookName);
-        Page<BookEntity> page = bookService.findBooksByNameLike(bookName, pageable);
+        Page<BookEntity> page = bookName.isEmpty()
+                ? bookService.findAllBooks(pageable)
+                : bookService.findBooksByNameLike('%' + bookName + '%', pageable);
         model.addAttribute("page", page);
-        model.addAttribute("pageNum", page.getNumber());
+        setTotalPage(model, page);
         return "books";
     }
 
+    // todo додати перевірку на неіснуючі книги
     @GetMapping("/books/{id}")
     public String book(Model model, @PathVariable int id) {
 

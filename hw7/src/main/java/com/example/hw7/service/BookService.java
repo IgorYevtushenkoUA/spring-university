@@ -4,7 +4,6 @@ import com.example.hw7.entity.AuthorEntity;
 import com.example.hw7.entity.BookEntity;
 import com.example.hw7.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -45,22 +44,11 @@ public class BookService {
     }
 
     public Page<BookEntity> findBooksByNameLike(String name,Pageable pageable) {
-        return bookRepository.findBooksByNameLike('%'+name+'%',pageable);
+        return bookRepository.findBooksByNameLike(name,pageable);
     }
 
     public List<AuthorEntity> findBookAuthors(BookEntity book){
         return book.getAuthors();
-    }
-
-
-
-    public void deleteBookById(int bookId) {
-        try {
-            bookRepository.deleteById(bookId);
-            System.out.println("delete book YES");
-        } catch (EmptyResultDataAccessException e) {
-            System.out.println("book with this id doesn't exists");
-        }
     }
 
 }
