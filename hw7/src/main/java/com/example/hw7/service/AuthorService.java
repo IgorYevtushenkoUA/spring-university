@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,6 +16,10 @@ import java.util.Optional;
 public class AuthorService {
 
     private final AuthorRepository authorRepository;
+
+    public List<AuthorEntity> findAllAuthor(){
+        return authorRepository.findAll();
+    }
 
     public void addAuthor(AuthorEntity author) {
         authorRepository.saveAndFlush(author);
@@ -31,8 +35,8 @@ public class AuthorService {
         authorRepository.deleteById(authorId);
     }
 
-    public void findAllAuthorByName(String name) {
-        authorRepository.findAllAuthorByName(name);
+    public List<AuthorEntity> findAllAuthorByName(String name) {
+        return authorRepository.findAllAuthorByName(name);
     }
 
     public void addToAuthorBook(AuthorEntity author, BookEntity book) {

@@ -1,9 +1,6 @@
 package com.example.hw7;
 
-import com.example.hw7.entity.AuthorEntity;
-import com.example.hw7.entity.BookEntity;
 import com.example.hw7.service.AuthorService;
-import com.example.hw7.service.BookService;
 import com.example.hw7.service.ClientService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,6 +17,7 @@ public class Hw7Application {
     public static void testBook(ApplicationContext applicationContext) {
         AuthorService authorService = applicationContext.getBean(AuthorService.class);
         ClientService clientService = applicationContext.getBean(ClientService.class);
+
 //        System.out.println("get all");
 //        System.out.println(bookService.findAllBooks());
 //-------------------------------------------------------

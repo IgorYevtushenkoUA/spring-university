@@ -13,11 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ClientService {
 
-    private final ClientRepository clientRepository
+    private final ClientRepository clientRepository;
 
-    public void addToAuthorBook(ClientEntity client, BookEntity book) {
+    public void addToClientFavouriteBook(ClientEntity client, BookEntity book) {
         client.getClientBooks().add(book);
-        clientRepository.save(book);
+        clientRepository.save(client);
     }
 
 }
