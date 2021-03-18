@@ -3,6 +3,7 @@ package com.example.hw7.entity;
 import javax.persistence.*;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -12,10 +13,12 @@ import java.util.List;
 @Table(name = "client")
 @Getter
 @Setter
-@ToString(exclude = "role")
+@ToString
+@NoArgsConstructor
 public class ClientEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "client_id")
     private Integer clientId;
 
@@ -36,12 +39,12 @@ public class ClientEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", insertable = false, updatable = false)
-    private RoleEntity role;
+    @ToString.Exclude private RoleEntity role;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "client_has_favorite_book",
             joinColumns = @JoinColumn(name = "client_id"),
             inverseJoinColumns = @JoinColumn(name = "book_id"))
-    private List<BookEntity> clientBooks;
+    @ToString.Exclude private List<BookEntity> clientBooks;
 
 }

@@ -3,6 +3,7 @@ package com.example.hw7.entity;
 import javax.persistence.*;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class RoleEntity {
 
     @Id
@@ -24,6 +26,6 @@ public class RoleEntity {
     private String number;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "role")
-    private List<ClientEntity> clientsRole;
+    @ToString.Exclude private List<ClientEntity> clientsRole;
 
 }
