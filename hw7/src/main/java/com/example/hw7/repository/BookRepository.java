@@ -19,6 +19,6 @@ public interface BookRepository extends CrudRepository<BookEntity, Integer> {
     Optional<BookEntity> findBookByISBN(@Param("isbn") String isbn);
 
     @Query("SELECT b FROM BookEntity b WHERE b.name LIKE:name")
-    Optional<BookEntity> findBookByNameLike(@Param("name") String name);
+    Page<BookEntity> findBooksByNameLike(@Param("name") String name, Pageable pageable);
 
 }

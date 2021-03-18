@@ -1,5 +1,6 @@
 package com.example.hw7.controller;
 
+import com.example.hw7.entity.AuthorEntity;
 import com.example.hw7.entity.BookEntity;
 import com.example.hw7.service.AuthorService;
 import com.example.hw7.service.BookService;
@@ -12,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
@@ -34,23 +36,36 @@ public class MainController {
     public String main(Model model, Pageable pageable) {
 
         model.addAttribute("books", bookService.findAllBooks(pageable));
-        model.addAttribute("authors", authorService.findAllAuthor());
+        model.addAttribute("authors", authorService.findAllAuthor(pageable));
         return "main";
     }
 
     @GetMapping("/authors")
-    public String authorsGet(Model model) {
+    public String authorsGet(@PageableDefault(size = 6) Pageable pageable, Model model) {
 
+        Page<AuthorEntity> page = authorService.findAllAuthor(pageable);
         model.addAttribute("authorName", new String("have name----"));
-        model.addAttribute("authors", authorService.findAllAuthor());
+        model.addAttribute("page", page);
+        model.addAttribute("pageNum", page.getNumber());
+        model.addAttribute("bookName", new String());
+
+        int totalPages = page.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(0, totalPages - 1)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
         return "authors";
     }
 
     @PostMapping("/authors")
-    public String authorsPost(@ModelAttribute("authorName") String authorName,
+    public String authorsPost(@PageableDefault(size = 6) Pageable pageable, @ModelAttribute("authorName") String authorName,
                               Model model) {
         model.addAttribute("authorName", authorName);
-        model.addAttribute("authors", authorService.findAllAuthorByName(authorName));
+        Page<AuthorEntity> page = authorService.findAllAuthorByName(authorName, pageable);
+        model.addAttribute("page", page);
+        model.addAttribute("pageNum", page.getNumber());
         return "authors";
     }
 
@@ -63,7 +78,7 @@ public class MainController {
 
         int totalPages = page.getTotalPages();
         if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(0, totalPages-1)
+            List<Integer> pageNumbers = IntStream.rangeClosed(0, totalPages - 1)
                     .boxed()
                     .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
@@ -73,28 +88,32 @@ public class MainController {
     }
 
     @PostMapping("/books")
-    public String booksPost(@ModelAttribute("bookName") String bookName,
+    public String booksPost(@PageableDefault(size = 6) Pageable pageable,
+                            @ModelAttribute("bookName") String bookName,
                             Model model) {
         model.addAttribute("bookName", bookName);
-        model.addAttribute("books", bookService.findBookByNameLike(bookName));
+        Page<BookEntity> page = bookService.findBooksByNameLike(bookName, pageable);
+        model.addAttribute("page", page);
+        model.addAttribute("pageNum", page.getNumber());
         return "books";
     }
 
-//    @GetMapping("/books/{id}")
-//    public String book(Model model, @PathVariable int id) {
-//
-//        model.addAttribute("authors", authorHasBookService.getAuthorsByBookId(id));
-//        model.addAttribute("book", bookService.getBookById(id));
-//        return "book";
-//    }
-//
-//    @GetMapping("/authors/{id}")
-//    public String author(Model model, @PathVariable int id) {
-//
-//        model.addAttribute("author", authorService.getAuthorById(id));
-//        model.addAttribute("books", authorHasBookService.getBooksByAuthorId(id));
-//        return "author";
-//    }
+    @GetMapping("/books/{id}")
+    public String book(Model model, @PathVariable int id) {
+
+        BookEntity book = bookService.findAllBookById(id).stream().findFirst().orElse(null);
+        model.addAttribute("authors", bookService.findBookAuthors(book));
+        model.addAttribute("book", book);
+        return "book";
+    }
+
+    @GetMapping("/authors/{id}")
+    public String author(Model model, @PathVariable int id) {
+        AuthorEntity author = authorService.findAuthorById(id).stream().findFirst().orElse(null);
+        model.addAttribute("author", author);
+        model.addAttribute("books", authorService.findAllAuthorsBook(author));
+        return "author";
+    }
 //
 //    @GetMapping("/books/create")
 //    public String createBookGet(Model model) {

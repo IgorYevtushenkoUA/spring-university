@@ -1,5 +1,6 @@
 package com.example.hw7.service;
 
+import com.example.hw7.entity.AuthorEntity;
 import com.example.hw7.entity.BookEntity;
 import com.example.hw7.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
@@ -43,9 +44,15 @@ public class BookService {
         return bookRepository.findBookByISBN(isbn);
     }
 
-    public Optional<BookEntity> findBookByNameLike(String name) {
-        return bookRepository.findBookByNameLike(name);
+    public Page<BookEntity> findBooksByNameLike(String name,Pageable pageable) {
+        return bookRepository.findBooksByNameLike('%'+name+'%',pageable);
     }
+
+    public List<AuthorEntity> findBookAuthors(BookEntity book){
+        return book.getAuthors();
+    }
+
+
 
     public void deleteBookById(int bookId) {
         try {
