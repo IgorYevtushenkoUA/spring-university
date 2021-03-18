@@ -1,16 +1,22 @@
 package com.example.hw7.controller;
 
+import com.example.hw7.entity.BookEntity;
 import com.example.hw7.service.AuthorService;
 import com.example.hw7.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 public class MainController {
@@ -25,9 +31,9 @@ public class MainController {
 //    private AuthorHasBookService authorHasBookService;
 
     @GetMapping("/")
-    public String main(Model model) {
+    public String main(Model model, Pageable pageable) {
 
-        model.addAttribute("books", bookService.findAllBooks());
+        model.addAttribute("books", bookService.findAllBooks(pageable));
         model.addAttribute("authors", authorService.findAllAuthor());
         return "main";
     }
@@ -49,9 +55,20 @@ public class MainController {
     }
 
     @GetMapping("/books")
-    public String booksGet(Model model) {
-        model.addAttribute("books", bookService.findAllBooks());
+    public String booksGet(@PageableDefault(size = 6) Pageable pageable, Model model) {
+        Page<BookEntity> page = bookService.findAllBooks(pageable);
+        model.addAttribute("page", page);
+        model.addAttribute("pageNum", page.getNumber());
         model.addAttribute("bookName", new String());
+
+        int totalPages = page.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(0, totalPages-1)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+
         return "books";
     }
 
