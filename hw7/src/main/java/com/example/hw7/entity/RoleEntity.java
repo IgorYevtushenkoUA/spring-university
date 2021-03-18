@@ -23,7 +23,7 @@ public class RoleEntity {
     @Column(name = "name")
     private String number;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "role")
-    private List<UserEntity> usersRole;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "role")
+    private List<ClientEntity> clientsRole;
 
 }

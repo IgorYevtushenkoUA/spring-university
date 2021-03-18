@@ -28,10 +28,10 @@ public class BookEntity {
     @Column(name = "description")
     private String description;
 
-    @ManyToMany(mappedBy = "book")
-    List<UserEntity> users;
+    @ManyToMany(mappedBy = "clientBooks")
+    @ToString.Exclude List<ClientEntity> clients;
 
-    @ManyToMany(mappedBy = "book")
-    List<AuthorEntity> authors;
+    @ManyToMany(mappedBy = "authorBooks")
+    @ToString.Exclude List<AuthorEntity> authors;
 
 }

@@ -6,12 +6,16 @@ create table book
     name        varchar(256)  not null,
     description varchar(2048) not null
 );
+
+
 -- table author
 create table author
 (
     author_id serial primary key,
     name      varchar(256) not null
 );
+
+
 -- table author_has_book
 create table author_has_book
 (
@@ -27,39 +31,45 @@ create table author_has_book
         primary key (author_id, book_id)
 );
 
+
 -- table role
 create table role
 (
-    role_id integer primary key,
+    role_id serial primary key,
     name    varchar(32) not null
 )
--- table user
-create table user
+
+
+-- table client
+create table client
 (
-    user_id      integer primary key,
+    client_id    serial primary key,
     role_id      integer     not null,
     name         varchar(32) not null,
     surname      varchar(32) not null,
     password     varchar(32) not null,
     phone_number varchar(32) not null,
-    constraint fk_user_role_id
+    constraint fk_client_role_id
         foreign key (role_id)
             references role (role_id)
 )
--- table user_has_favourite_book
-create table user_has_favourite_book
+
+
+-- table client_has_favourite_book
+create table client_has_favourite_book
 (
-    user_id integer not null,
-    book_id integer not null,
-    constraint fk_user_has_favourite_book_user_id
-        foreign key (user_id)
-            references user (user_id),
-    constraint fk_user_has_favourite_book_book_id
+    client_id integer not null,
+    book_id   integer not null,
+    constraint fk_client_has_favourite_book_client_id
+        foreign key (client_id)
+            references client (client_id),
+    constraint fk_client_has_favourite_book_book_id
         foreign key (book_id)
             references book (book_id),
-    constraint user_has_favourite_book_pk
-        primary key (user_id, book_id)
+    constraint client_has_favourite_book_pk
+        primary key (client_id, book_id)
 );
+
 
 -- insert book
 insert into book(isbn, name, description)
@@ -77,6 +87,8 @@ values ('384152', 'Шантарам',
 insert into book(isbn, name, description)
 values ('753434', 'Граф Монте Крісто',
         'Как и сто шестьдесят пять лет назад, "Граф Монте-Кристо" Александра Дюма остается одним из самых популярных романов в мировой литературе. К нему писали продолжения, его ставили на сцене, создавали мюзиклы, экранизировали, но и по сей день бесчисленные издания этой книги доставляют удовольствие новым и новым поколениям читателей. История молодого парижанина, которого приятели в шутку засадили в тюрьму, почерпнута автором в архивах парижской полиции. А из-под пера мастера выходит моряк Эдмон Дантес, мученик замка Иф. Не дождавшись правосудия, он решает сам вершить суд и жестоко мстит врагам, разрушившим его счастье. В настоящем издании роман сопровождается полным комплектом иллюстраций французских художников XIX века к первым публикациям "Графа Монте-Кристо". В издание также включена история сапожника Франсуа Пико, взятая из криминальной хроники, послужившая прообразом сюжетных перипетий романа.');
+
+
 -- insert author
 insert into author(name)
 values ('Джейсон Фрайд');
@@ -90,6 +102,8 @@ insert into author(name)
 values ('Грегорі Девір Робертс');
 insert into author(name)
 values ('Граф Дюма');
+
+
 --insert author_has_book
 insert into author_has_book(author_id, book_id)
 values (1, 1);
@@ -103,17 +117,29 @@ insert into author_has_book(author_id, book_id)
 values (5, 4);
 insert into author_has_book(author_id, book_id)
 values (6, 5);
+
+
 -- insert role
-insert into role(name) value ('user')
-insert into role (name) value ('admin')
--- insert user
-insert into user (role_id, name, surname, password, phone_number)
-values (1, 'user', 'user', 'user', '111-11-11');
-insert into user(name, surname, password, phone_number)
-values (1, 'user2', 'surname2', 'user', '222-22-22');
-insert into user(name, surname, password, phone_number)
-values (1, 'user3', 'surname3', 'user', '333-33-33');
--- insert user_has_favourite_book
-insert into user_has_favourite_book(user_id, book_id)
+insert into role (name)
+values ('client');
+insert into role (name)
+values ('admin');
+
+
+-- insert client
+insert into client (role_id, name, surname, password, phone_number)
+values (1, 'client', 'client', 'client', '111-11-11');
+insert into client(role_id, name, surname, password, phone_number)
+values (1, 'client2', 'surname2', 'client', '222-22-22');
+insert into client(role_id, name, surname, password, phone_number)
+values (1, 'client3', 'surname3', 'client', '333-33-33');
+
+
+-- insert client_has_favourite_book
+insert into client_has_favourite_book(client_id, book_id)
 values (1, 1);
+insert into client_has_favourite_book(client_id, book_id)
+values (1, 2);
+insert into client_has_favourite_book(client_id, book_id)
+values (1, 3);
 

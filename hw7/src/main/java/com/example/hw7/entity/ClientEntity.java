@@ -9,15 +9,15 @@ import lombok.ToString;
 import java.util.List;
 
 @Entity
-@Table(name = "user")
+@Table(name = "client")
 @Getter
 @Setter
 @ToString(exclude = "role")
-public class UserEntity {
+public class ClientEntity {
 
     @Id
-    @Column(name = "user_id")
-    private Integer userId;
+    @Column(name = "client_id")
+    private Integer clientId;
 
     @Column(name="role_id")
     private String roleId;
@@ -39,9 +39,9 @@ public class UserEntity {
     private RoleEntity role;
 
     @ManyToMany
-    @JoinTable(name = "user_has_favourite_book",
-            joinColumns = @JoinColumn(name = "user_id"),
+    @JoinTable(name = "client_has_favorite_book",
+            joinColumns = @JoinColumn(name = "client_id"),
             inverseJoinColumns = @JoinColumn(name = "book_id"))
-    private List<BookEntity> books;
+    private List<BookEntity> clientBooks;
 
 }
