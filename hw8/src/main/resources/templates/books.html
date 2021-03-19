@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+
+</head>
+<body>
+
+<div class="container">
+    <div th:insert="navbar"></div>
+
+    <div class="main-block">
+
+        <div class="filter">
+            <form action="/books" method="post">
+                <div>
+                    <input type="text" name="bookName" placeholder="bookName" th:object="${bookName}">
+                </div>
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </div>
+
+        <!--        <div class="row">-->
+        <!--            <div class="books col-4" th:each="book : ${page.content}">-->
+        <!--                <div class="book">-->
+        <!--                    <img src="./images/book.png" alt="books-image">-->
+        <!--                    <h3 th:text="${book.getName()}"></h3>-->
+        <!--                </div>-->
+        <!--                <button class="btn"><a th:href="@{/books/{id}(id=${book.getBookId()})}">more info</a></button>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <div class="pagination">
+            <table border="1">
+                <thead>
+                <tr>
+                    <th th:text="Text"/>
+                    <th th:text="msg.name"/>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="book, iStat : ${page.content}"
+                    th:style="${iStat.odd}? 'font-weight: bold;'"
+                    th:alt-title="${iStat.even}? 'even' : 'odd'">
+                    <td th:text="${book.getBookId()}"/>
+                    <td><a th:text="${book.getName()}"
+                           th:href="@{/books/{id}(id=${book.getBookId()})}"></a></td>
+                </tr>
+                </tbody>
+            </table>
+            <div th:if="${page.totalPages > 0}" class="pagination"
+                 th:each="pageNumber : ${pageNumbers}">
+                <a th:href="@{/books(size=${6}, page=${pageNumber})}"
+                   th:text=${pageNumber}
+                   th:class="${pageNumber==page.number} ? active"></a>
+            </div>
+
+        </div>
+
+
+
+        <div>
+            <a href="/books/create">
+                <strong> ADD BOOK </strong>
+            </a>
+        </div>
+
+        <div class="pagination">
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</body>
+</html>

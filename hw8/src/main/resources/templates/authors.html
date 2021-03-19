@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+
+</head>
+<body>
+<div class="container">
+    <div th:insert="navbar"></div>
+
+    <div class="main-block">
+
+        <div class="filter">
+            <form action="/authors" method="post">
+                <div>
+                    <input type="text" name="authorName" placeholder="authorName" th:object="${authorName}">
+                </div>
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </div>
+
+
+<!--        <div class="row">-->
+<!--            <div class="authors col-4" th:each="author : ${authors}">-->
+<!--                <div class="author">-->
+<!--                    <img src="./images/author.png" alt="author-image">-->
+<!--                    <h3 th:text="${author.getName()}"></h3>-->
+<!--                </div>-->
+<!--                <button class="btn"><a th:href="@{/authors/{id}(id=${author.getAuthorId()})}">more info</a></button>-->
+<!--            </div>-->
+<!--        </div>-->
+        <div class="pagination">
+            <table border="1">
+                <thead>
+                <tr>
+                    <th th:text="Text"/>
+                    <th th:text="msg.name"/>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="author, iStat : ${page.content}"
+                    th:style="${iStat.odd}? 'font-weight: bold;'"
+                    th:alt-title="${iStat.even}? 'even' : 'odd'">
+                    <td th:text="${author.getAuthorId()}"/>
+                    <td><a th:text="${author.getName()}"
+                           th:href="@{/author/{id}(id=${author.getAuthorId()})}"></a></td>
+                </tr>
+                </tbody>
+            </table>
+            <div th:if="${page.totalPages > 0}" class="pagination"
+                 th:each="pageNumber : ${pageNumbers}">
+                <a th:href="@{/authors(size=${6}, page=${pageNumber})}"
+                   th:text=${pageNumber}
+                   th:class="${pageNumber==page.number} ? active"></a>
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+</body>
+</html>
