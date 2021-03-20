@@ -2,20 +2,44 @@
 .login-form {
     border: 2px solid #fbfafb;
     border-radius: 20px;
-    background:  #fbfafb;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5)
+    background: #fbfafb;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5)
 }
+
 /* main */
 
 .card {
     height: 280px;
     border: 2px solid #fbfafb;
     border-radius: 5px;
-    background:  #fbfafb;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5)
+    background: #fbfafb;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5)
 }
+
+.filter-name {
+    padding: 20px;
+    width: 80%;
+    display: inline-block;
+}
+.input {
+    width: 60%;
+}
+
 img {
     width: 128px;
     height: 128px;
 }
-
+/* books | authors */
+.pagination {
+    display: inline-block;
+}
+.page{
+    width: 35px;
+    height: 35px;
+    font-size: 20px;
+    padding-left:8px;
+    border: 2px solid #fbfafb;
+    border-radius: 5px;
+    background: #fbfafb;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5)
+}
