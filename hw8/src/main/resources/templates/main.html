@@ -4,39 +4,41 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+
 </head>
 <body>
 
 <div class="container">
     <div th:insert="navbar"></div>
 
-    <div class="main-block text-center">
-        <div class="books-block">
-            <a class="h2 text-muted " href="/books"><strong>Books</strong></a>
+    <div class=" container2 main-block text-center">
+        <div>
+            <a class="h2 text-muted mt-5" href="/books"><strong>Books</strong></a>
             <div class="row">
-                <div class="books col-4" th:each="book, iterator : ${books}" , th:if="${iterator.index}<3">
-                    <div class="book ">
-                        <img src="./images/book.png" alt="books-image">
-                        <h3><a th:text="${book.getName()}",
+                <div class="col-4 mt-5" th:each="book, iterator : ${books}" , th:if="${iterator.index}<3">
+                    <div class="card">
+                        <img src="./images/book.png" alt="books-image" style="margin-left: auto;margin-right: auto">
+                        <h3 class="mt-5"><a th:text="${book.getName()}",
                                th:href="@{/books/{id}(id=${book.getBookId()})}"></a></h3>
                     </div>
                 </div>
             </div>
-            <a href="/books" class="btn btn-primary">More Info</a>
+            <a href="/books" class="btn btn-dark mt-5">More Info</a>
         </div>
 
-        <div class="author-block mt-4">
-            <a class="h2 text-muted" href="/authors"><strong>Authors</strong></a>
+        <div class="author-block mt-5">
+            <a class="h2 text-muted mt-5" href="/authors"><strong>Authors</strong></a>
             <div class="row">
-                <div class="authors col-4" th:each="author, iterator : ${authors}" , th:if="${iterator.index}<3">
-                    <div class="author">
-                        <img src="./images/author.png" alt="author-image">
-                        <h3><a th:text="${author.getName()}",
+                <div class="authors col-4 mt-5" th:each="author, iterator : ${authors}" , th:if="${iterator.index}<3">
+                    <div class="card">
+                        <img class="text-center" src="./images/author.png" alt="author-image" style="margin-left: auto; margin-right: auto">
+                        <h3 class="mt-5"><a th:text="${author.getName()}",
                                th:href="@{/authors/{id}(id=${author.getAuthorId()})}"></a></h3>
                     </div>
                 </div>
             </div>
-            <a href="/authors" class="btn btn-primary">More Info</a>
+            <a href="/authors" class="btn btn-dark mt-5 mb-5">More Info</a>
         </div>
     </div>
 
