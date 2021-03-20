@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div class="container">
+    <div th:insert="navbar"></div>
+
+    <from action="/favourite-books" method="post">
+        <div class="book-list">
+            <div th:each="book,iterator :${client.getClientBooks()}">
+                <div>
+                    <img src="./images/book.png" alt="books-image">
+                </div>
+                <div>
+                    <h3><a th:text="${book.getName()}" ,
+                           th:href="@{/books/{id}(id=${book.getBookId()})}"></a></h3>
+                </div>
+                <a type="submit"
+                   th:href="'/favourite-books/' + ${book.getBookId()} + '/remove'"
+                   class="btn btn-primary"
+                   th:object="${bookId}">DELETE</a>
+            </div>
+        </div>
+    </from>
+
+</div>
+
+</body>
+</html>

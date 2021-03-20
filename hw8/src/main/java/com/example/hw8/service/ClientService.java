@@ -21,8 +21,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @RequiredArgsConstructor
-//public class ClientService implements UserDetailsService {
-public class ClientService {
+public class ClientService implements UserDetailsService {
 
     private final ClientRepository clientRepository;
 
@@ -38,26 +37,26 @@ public class ClientService {
         return clientRepository.findClientByPhoneNumber(phoneNumber);
     }
 
-//    @Override
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//
-//        System.out.println("SURNAME ::::" + username + "::::");
-//
-//        ClientEntity client = clientRepository.findClientByUsername(username);
-////                .orElseThrow(() -> new UsernameNotFoundException("No client with username: " + username));
-//
-//        System.out.println("Client ::: " + client);
-//
-//        if (client == null) throw new UsernameNotFoundException("Unknown user: " + username);
-//
-//
-//        UserDetails user = User.builder()
-//                .username(client.getName())
-//                .password(client.getPassword())
-//                .roles(client.getClientRoles().getRoleName())
-//                .build();
-//        return user;
-//    }
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        System.out.println("SURNAME ::::" + username + "::::");
+
+        ClientEntity client = clientRepository.findClientByUsername(username);
+//                .orElseThrow(() -> new UsernameNotFoundException("No client with username: " + username));
+
+        System.out.println("Client ::: " + client);
+
+        if (client == null) throw new UsernameNotFoundException("Unknown user: " + username);
+
+
+        UserDetails user = User.builder()
+                .username(client.getName())
+                .password(client.getPassword())
+                .roles(client.getClientRoles().getRoleName())
+                .build();
+        return user;
+    }
 
     public void addFavouriteBook(ClientEntity client, BookEntity book) {
         if (client.getClientBooks()
@@ -74,6 +73,14 @@ public class ClientService {
         client.setClientBooks(client.getClientBooks()
                 .stream()
                 .filter(bookItem -> bookItem.getBookId() != book.getBookId())
+                .collect(Collectors.toList()));
+        clientRepository.save(client);
+    }
+
+    public void removeFavouriteBookById(ClientEntity client, int bookId) {
+        client.setClientBooks(client.getClientBooks()
+                .stream()
+                .filter(bookItem -> bookItem.getBookId() != bookId)
                 .collect(Collectors.toList()));
         clientRepository.save(client);
     }

@@ -14,24 +14,24 @@ public class Hw8Application {
 
     public static void main(String[] args) {
         ApplicationContext applicationContext = SpringApplication.run(Hw8Application.class, args);
-        testClient(applicationContext);
+//        testClient(applicationContext);
 
 
     }
 
     public static  void testClient(ApplicationContext applicationContext){
-        ClientService clientService = applicationContext.getBean(ClientService.class);
-        BookService bookService = applicationContext.getBean(BookService.class);
-        System.out.println(clientService.findClientByUsername("client").getClientRoles().getRoleName());
-
-        ClientEntity client = clientService.findClientById(1);
-        BookEntity book = bookService.findAllBookById(6).stream().findFirst().orElse(null);
-//        System.out.println("add book");
-//        clientService.addFavouriteBook(client, book);
-//        System.out.println("was added book");
-        System.out.println("delete book");
-        clientService.removeFavouriteBook(client, book);
-        System.out.println("was deleted book");
+//        ClientService clientService = applicationContext.getBean(ClientService.class);
+//        BookService bookService = applicationContext.getBean(BookService.class);
+//        System.out.println(clientService.findClientByUsername("client").getClientRoles().getRoleName());
+//
+//        ClientEntity client = clientService.findClientById(1);
+//        BookEntity book = bookService.findAllBookById(6).stream().findFirst().orElse(null);
+////        System.out.println("add book");
+////        clientService.addFavouriteBook(client, book);
+////        System.out.println("was added book");
+//        System.out.println("delete book");
+//        clientService.removeFavouriteBook(client, book);
+//        System.out.println("was deleted book");
 
 
     }

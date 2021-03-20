@@ -2,8 +2,10 @@ package com.example.hw8.controller;
 
 import com.example.hw8.entity.AuthorEntity;
 import com.example.hw8.entity.BookEntity;
+import com.example.hw8.entity.ClientEntity;
 import com.example.hw8.service.AuthorService;
 import com.example.hw8.service.BookService;
+import com.example.hw8.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +30,10 @@ public class MainController {
 
     @Autowired
     private AuthorService authorService;
+
+    @Autowired
+    private ClientService clientService;
+
 
     public void setTotalPage(Model model, Page page) {
         int totalPages = page.getTotalPages();
@@ -110,6 +116,23 @@ public class MainController {
         model.addAttribute("books", authorService.findAllAuthorsBook(author));
         return "author";
     }
+
+    @GetMapping("/favourite-books")
+    public String favouriteBooks(Model model) {
+        ClientEntity client = clientService.findClientById(1);
+        model.addAttribute("client", client);
+        return "favourite_books";
+    }
+
+    @GetMapping("/favourite-books/{id}/remove")
+    public String favouriteBookPost(@PathVariable int id) {
+        System.out.println("remove");
+        ClientEntity client = clientService.findClientById(1);
+        clientService.removeFavouriteBookById(client, id);
+        return "redirect:/favourite-books";
+    }
+
+
 //
 //    @GetMapping("/books/create")
 //    public String createBookGet(Model model) {
