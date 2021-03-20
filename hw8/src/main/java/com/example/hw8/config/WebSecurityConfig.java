@@ -35,8 +35,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                .antMatchers("/favourite-books").hasAnyRole("client")
-                .antMatchers("/add-book").hasAnyRole("admin")
+//                .antMatchers("/favourite-books").hasAnyRole("client")
+//                .antMatchers("/create-book").hasAnyRole("admin")
                 .antMatchers("/","/books/**", "/authors/**", "/registration").permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -50,7 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     @Override
-    protected  UserDetailsService userDetailsService(){
+    public  UserDetailsService userDetailsService(){
         return new ClientService(clientRepository);
     }
 

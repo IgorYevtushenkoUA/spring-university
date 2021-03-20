@@ -4,7 +4,9 @@ import com.example.hw8.entity.BookEntity;
 import com.example.hw8.entity.ClientEntity;
 import com.example.hw8.entity.RoleEntity;
 import com.example.hw8.repository.ClientRepository;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -22,6 +24,9 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 public class ClientService implements UserDetailsService {
+    @Getter
+    @Setter
+    private ClientEntity client;
 
     private final ClientRepository clientRepository;
 
@@ -42,7 +47,7 @@ public class ClientService implements UserDetailsService {
 
         System.out.println("SURNAME ::::" + username + "::::");
 
-        ClientEntity client = clientRepository.findClientByUsername(username);
+        setClient(clientRepository.findClientByUsername(username));
 //                .orElseThrow(() -> new UsernameNotFoundException("No client with username: " + username));
 
         System.out.println("Client ::: " + client);

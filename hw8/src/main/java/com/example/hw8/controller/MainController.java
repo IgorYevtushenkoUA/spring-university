@@ -10,19 +10,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-@Controller
+//@Controller
+ @RestController // не повертає html сторінку
 public class MainController {
 
     @Autowired
@@ -34,8 +33,11 @@ public class MainController {
     @Autowired
     private ClientService clientService;
 
+    ClientEntity authClient;
 
-    public void setTotalPage(Model model, Page page) {
+    public void setTotalPage(Model model,
+                             Page page) {
+
         int totalPages = page.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(0, totalPages - 1)
@@ -46,7 +48,9 @@ public class MainController {
     }
 
     @GetMapping("/")
-    public String main(Model model, Pageable pageable) {
+    @ResponseBody
+    public String main(Model model,
+                       Pageable pageable) {
 
         model.addAttribute("books", bookService.findAllBooks(pageable));
         model.addAttribute("authors", authorService.findAllAuthor(pageable));
@@ -54,7 +58,8 @@ public class MainController {
     }
 
     @GetMapping("/authors")
-    public String authorsGet(@PageableDefault(size = 6) Pageable pageable, Model model) {
+    public String authorsGet(@PageableDefault(size = 6) Pageable pageable,
+                             Model model) {
 
         Page<AuthorEntity> page = authorService.findAllAuthor(pageable);
         model.addAttribute("authorName", new String("have name----"));
@@ -64,7 +69,8 @@ public class MainController {
     }
 
     @PostMapping("/authors")
-    public String authorsPost(@PageableDefault(size = 6) Pageable pageable, @ModelAttribute("authorName") String authorName,
+    public String authorsPost(@PageableDefault(size = 6) Pageable pageable,
+                              @ModelAttribute("authorName") String authorName,
                               Model model) {
         model.addAttribute("authorName", authorName);
         Page<AuthorEntity> page = authorName.isEmpty()
@@ -77,6 +83,7 @@ public class MainController {
 
     @GetMapping("/books")
     public String booksGet(@PageableDefault(size = 6) Pageable pageable, Model model) {
+
 
         Page<BookEntity> page = bookService.findAllBooks(pageable);
         model.addAttribute("page", page);
@@ -119,53 +126,58 @@ public class MainController {
 
     @GetMapping("/favourite-books")
     public String favouriteBooks(Model model) {
-        ClientEntity client = clientService.findClientById(1);
-        model.addAttribute("client", client);
+        authClient = clientService.findClientByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        model.addAttribute("client", authClient);
         return "favourite_books";
     }
 
     @GetMapping("/favourite-books/{id}/remove")
     public String favouriteBookPost(@PathVariable int id) {
         System.out.println("remove");
-        ClientEntity client = clientService.findClientById(1);
-        clientService.removeFavouriteBookById(client, id);
+        clientService.removeFavouriteBookById(authClient, id);
         return "redirect:/favourite-books";
     }
 
-
-//
-//    @GetMapping("/books/create")
-//    public String createBookGet(Model model) {
-//        model.addAttribute("book", new Book());
-////        model.addAttribute("author", new AuthorEntity());
-//        System.out.println("create book");
-//        return "create_book";
+//    @GetMapping("/login")
+//    public String login(Model model) {
+//        System.out.println("login");
+//        model.addAttribute("username", new String());
+//        model.addAttribute("password", new String());
+//        return "login";
 //    }
-//
-//    @PostMapping("/books/create")
-//    public String createBookPost(@ModelAttribute Book book,
-//                                 Model model) {
-//        model.addAttribute("book", book);
-//        // тут робити пост запити
-//        BookEntity newBook = new BookEntity();
-//        newBook.setIsbn(book.getIsbn());
-//        newBook.setName(book.getBookName());
-//        newBook.setDescription(book.getDescription());
-//
-//        System.out.println("New Book1 : " + newBook.toString());
-//        newBook = bookService.addNewBook(newBook);
-//        System.out.println("New Book2 : " + newBook.toString());
-//
-//        String[] authors = book.getAuthor().split(",");
-//        for (String authorName : authors) {
-//            List authorsList = authorService.findAuthorsByName(authorName);
-//            int authorId = authorsList.isEmpty()
-//                    ? authorService.addNewAuthor(authorName).getAuthorId()
-//                    : ((AuthorEntity) authorsList.get(0)).getAuthorId();
-//            authorHasBookService.createAuthorHasBook(authorId, newBook.getBookId());
-//        }
-//
+
+//    // #todo не заходить в пост і я не можу дістати нашого користувача у правильному місці
+//    @PostMapping("/login")
+//    public String loginPost(@ModelAttribute("username") String username, @ModelAttribute("password") String password) {
+//        System.out.println("NAME : " + username);
+//        System.out.println("loginPost");
 //        return "redirect:/books";
 //    }
+
+
+    @GetMapping("/books/create")
+    public String createBookGet(Model model) {
+        model.addAttribute("book", new BookEntity());
+
+        model.addAttribute("authors", "authorName");
+        System.out.println("create book");
+        return "create_book";
+    }
+
+    @PostMapping("/books/create")
+    public String createBookPost(@ModelAttribute("book") BookEntity book,
+                                 @ModelAttribute("authors") String authors,
+                                 Model model) {
+
+        model.addAttribute("authors", authors);
+        model.addAttribute("book", book);
+        System.out.println("POST POST POST POST POST POST POST POST POST POST POST POST ");
+
+//        for (String authorName : authors.split(",")) {
+//            book.getAuthors().add(authorService.findAllAuthorByName(authorName).stream().findFirst().orElse(null));
+//        }
+//        bookService.addBook(book);
+        return "";
+    }
 }
 

@@ -10,7 +10,8 @@
 
 <div class="container">
     <div class="">
-        <form action="/books/create" method="post" th:object="${book}">
+        <form action="/create-book" method="post" th:object="${book}">
+        <form action="/books/create" method="post">
             <div class="container">
                 <div class="row mt-5">
                     <label class="col-4">Enter ISBN : </label>
@@ -18,15 +19,16 @@
                 </div>
                 <div class="row mt-2">
                     <label class="col-4">Enter Book : </label>
-                    <input class="col-8" type="text" name="bookName" placeholder="book name" th:object="${book.bookName}">
+                    <input class="col-8" type="text" name="bookName" placeholder="book name" th:object="${book.name}">
                 </div>
                 <div class="row mt-2">
                     <label class="col-4">Enter description : </label>
                     <input class="col-8" type="text" name="description" placeholder="description" th:object="${book.description}">
                 </div>
                 <div class="row mt-2">
-                    <label class="col-4">Enter author : </label>
-                    <input class="col-8" type="text" name="author" placeholder="author" th:object="${book.author}">
+                    <label class="col-4">Enter authors : </label>
+                    <input class="col-8" type="text" name="author" placeholder="author" th:object="${authors}">
+                    <label > if you have few authors please use commas</label>
                 </div>
             </div>
             <div class="col-12 d-flex justify-content-center mt-3">

@@ -16,7 +16,7 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @GetMapping("/main")
+    @GetMapping("/")
     public String loadMainPage(Model model) {
         model.addAttribute("books", bookService.getAllBooks());
         return "mainPage";
@@ -33,7 +33,7 @@ public class BookController {
             @ModelAttribute("newBook") Book newBook, Model model) {
         model.addAttribute("newBook", newBook); // ????
         this.bookService.addNewBook(newBook);
-        return "redirect:/main";
+        return "redirect:/";
     }
 
 

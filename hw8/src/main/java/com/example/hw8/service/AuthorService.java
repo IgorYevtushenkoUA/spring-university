@@ -38,6 +38,10 @@ public class AuthorService {
         return authorRepository.findAllAuthorByName('%' + name + '%', pageable);
     }
 
+    public List<AuthorEntity> findAllAuthorByName(String name) {
+        return authorRepository.findAllAuthorByName(name);
+    }
+
     public void addToAuthorBook(AuthorEntity author, BookEntity book) {
         author.getAuthorBooks().add(book);
         authorRepository.save(author);
