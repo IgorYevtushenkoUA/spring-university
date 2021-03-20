@@ -133,11 +133,11 @@ values ('admin');
 
 -- insert client
 insert into client (role_id, name, surname, password, phone_number)
-values (1, 'client', 'client', 'client', '111-11-11');
+values (1, 'client', 'client', 'client', '123456789');
 insert into client(role_id, name, surname, password, phone_number)
-values (1, 'client2', 'surname2', 'client', '222-22-22');
+values (1, 'client2', 'surname2', 'client', '671122333');
 insert into client(role_id, name, surname, password, phone_number)
-values (1, 'client3', 'surname3', 'client', '333-33-33');
+values (1, 'client3', 'surname3', 'client', '681122333');
 
 
 -- insert client_has_favourite_book

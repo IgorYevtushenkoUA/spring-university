@@ -37,12 +37,13 @@ public class ClientEntity {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", insertable = false, updatable = false)
-    @ToString.Exclude private RoleEntity role;
+    @ToString.Exclude private RoleEntity clientRoles;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "client_has_favorite_book",
+
+    @JoinTable(name = "client_has_favourite_book",
             joinColumns = @JoinColumn(name = "client_id"),
             inverseJoinColumns = @JoinColumn(name = "book_id"))
     @ToString.Exclude private List<BookEntity> clientBooks;

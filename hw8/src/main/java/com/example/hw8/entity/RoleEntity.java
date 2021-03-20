@@ -22,10 +22,10 @@ public class RoleEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer roleId;
 
-    @Column(name = "name")
-    private String number;
+    @Column(name = "name", unique = true)
+    private String roleName;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "role")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "clientRoles")
     @ToString.Exclude private List<ClientEntity> clientsRole;
 
 }
