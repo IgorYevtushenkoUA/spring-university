@@ -7,6 +7,7 @@ import com.example.hw8.service.AuthorService;
 import com.example.hw8.service.BookService;
 import com.example.hw8.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -20,9 +21,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-//@Controller
- @RestController // не повертає html сторінку
-public class MainController {
+@Controller
+public class MainController  {
+//public class MainController implements ErrorController {
 
     @Autowired
     private BookService bookService;
@@ -48,7 +49,6 @@ public class MainController {
     }
 
     @GetMapping("/")
-    @ResponseBody
     public String main(Model model,
                        Pageable pageable) {
 
@@ -179,5 +179,13 @@ public class MainController {
 //        bookService.addBook(book);
         return "";
     }
+
+//    @Override
+//    @RequestMapping("/error")
+//    @ResponseBody
+//    public String getErrorPath() {
+//        // TODO Auto-generated method stub
+//        return "No Mapping Found";
+//    }
 }
 
