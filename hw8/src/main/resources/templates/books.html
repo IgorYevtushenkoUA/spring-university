@@ -27,8 +27,9 @@
             <table border="1">
                 <thead>
                 <tr>
-                    <th th:text="Text"/>
-                    <th th:text="msg.name"/>
+                    <th th:text="№"/>
+                    <th th:text="BOOK"/>
+                    <th th:if="${role == 'client'}" th:text="ADD"/>
                 </tr>
                 </thead>
                 <tbody>
@@ -36,8 +37,15 @@
                     th:style="${iStat.odd}? 'font-weight: bold;'"
                     th:alt-title="${iStat.even}? 'even' : 'odd'">
                     <td th:text="${book.getBookId()}"/>
-                    <td><a th:text="${book.getName()}"
-                           th:href="@{/books/{id}(id=${book.getBookId()})}"></a></td>
+                    <td>
+                        <a th:text="${book.getName()}"
+                           th:href="@{/books/{id}(id=${book.getBookId()})}">
+                        </a>
+                    </td>
+                    <td th:if="${role == 'client'}">
+                        <button >ADD</button>
+                    </td>
+
                 </tr>
                 </tbody>
             </table>

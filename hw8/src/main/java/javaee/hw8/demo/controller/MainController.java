@@ -45,12 +45,17 @@ public class MainController {
         }
     }
 
+    public String getRole() {
+        return authClient == null ? "user" : authClient.getClientRoles().getRoleName();
+    }
+
     @GetMapping("/")
     public String main(Model model,
                        Pageable pageable) {
-
+        authClient = clientService.findClientByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("books", bookService.findAllBooks(pageable));
         model.addAttribute("authors", authorService.findAllAuthor(pageable));
+        model.addAttribute("role", getRole());
         return "main";
     }
 
@@ -62,6 +67,7 @@ public class MainController {
         model.addAttribute("authorName", new String("have name----"));
         model.addAttribute("isbnName", new String("have name----"));
         model.addAttribute("page", page);
+        model.addAttribute("role", getRole());
         setTotalPage(model, page);
         return "authors";
     }
@@ -70,14 +76,17 @@ public class MainController {
     public String authorsPost(@PageableDefault(size = 6) Pageable pageable,
                               @ModelAttribute("authorName") String authorName,
                               @ModelAttribute("isbnName") String isbnName,
+                              @ModelAttribute("role") String role,
                               Model model) {
         model.addAttribute("authorName", authorName);
         model.addAttribute("isbnName", isbnName);
+        model.addAttribute("role", role);
 
         Page<AuthorEntity> page = authorName.isEmpty()
                 ? authorService.findAllAuthor(pageable)
                 : authorService.findAllAuthorByName('%' + authorName + '%', pageable);
         model.addAttribute("page", page);
+        model.addAttribute("role", getRole());
         setTotalPage(model, page);
         return "authors";
     }
@@ -85,11 +94,12 @@ public class MainController {
     @GetMapping("/books")
     public String booksGet(@PageableDefault(size = 6) Pageable pageable, Model model) {
 
-
         Page<BookEntity> page = bookService.findAllBooks(pageable);
+
         model.addAttribute("page", page);
         model.addAttribute("bookName", new String());
         model.addAttribute("isbnName", new String());
+        model.addAttribute("role", getRole());
         setTotalPage(model, page);
         return "books";
     }
@@ -98,11 +108,13 @@ public class MainController {
     public String booksPost(@PageableDefault(size = 6) Pageable pageable,
                             @ModelAttribute("bookName") String bookName,
                             @ModelAttribute("isbnName") String isbnName,
+                            @ModelAttribute("role") String role,
                             Model model) {
+
 
         model.addAttribute("bookName", bookName);
         model.addAttribute("isbnName", isbnName);
-
+        model.addAttribute("role", role);
         Page<BookEntity> page;
         if (isbnName.isEmpty() && bookName.isEmpty()) {
             page = bookService.findAllBooks(pageable);
@@ -119,13 +131,13 @@ public class MainController {
         return "books";
     }
 
-    // todo додати перевірку на неіснуючі книги
     @GetMapping("/books/{id}")
     public String book(Model model, @PathVariable int id) {
 
         BookEntity book = bookService.findAllBookById(id).stream().findFirst().orElse(null);
         model.addAttribute("authors", bookService.findBookAuthors(book));
         model.addAttribute("book", book);
+        model.addAttribute("role", getRole());
         return "book";
     }
 
@@ -134,19 +146,19 @@ public class MainController {
         AuthorEntity author = authorService.findAuthorById(id).stream().findFirst().orElse(null);
         model.addAttribute("author", author);
         model.addAttribute("books", authorService.findAllAuthorsBook(author));
+        model.addAttribute("role", getRole());
         return "author";
     }
 
     @GetMapping("/books/liked")
     public String favouriteBooks(Model model) {
-        authClient = clientService.findClientByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("client", authClient);
+        model.addAttribute("role", getRole());
         return "favourite_books";
     }
 
     @GetMapping("/books/liked/{id}/remove")
     public String favouriteBookPost(@PathVariable int id) {
-        System.out.println("remove");
         clientService.removeFavouriteBookById(authClient, id);
         return "redirect:/favourite-books";
     }
@@ -154,8 +166,8 @@ public class MainController {
     @GetMapping("/books/create")
     public String createBookGet(Model model) {
         model.addAttribute("book", new BookEntity());
-
         model.addAttribute("authors", "authorName");
+        model.addAttribute("role", getRole());
         System.out.println("create book");
         return "create_book";
     }
@@ -163,17 +175,19 @@ public class MainController {
     @PostMapping("/books/create")
     public String createBookPost(@ModelAttribute("book") BookEntity book,
                                  @ModelAttribute("authors") String authors,
+                                 @ModelAttribute("role") String role,
                                  Model model) {
 
         model.addAttribute("authors", authors);
         model.addAttribute("book", book);
+        model.addAttribute("role", role);
         System.out.println("POST POST POST POST POST POST POST POST POST POST POST POST ");
 
 //        for (String authorName : authors.split(",")) {
 //            book.getAuthors().add(authorService.findAllAuthorByName(authorName).stream().findFirst().orElse(null));
 //        }
 //        bookService.addBook(book);
-        return "";
+        return "redirect:/books";
     }
 
 }

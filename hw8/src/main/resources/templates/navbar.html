@@ -13,6 +13,12 @@
             <a class="col-3" href="/">Main</a>
             <a class="col-3" href="/books">Books</a>
             <a class="col-3" href="/authors">Authors</a>
+            <a class="col-3"
+               th:if="${role == 'client'}"
+               href="/books/liked">Favourite Books</a>
+            <a class="col-3"
+               th:if="${role == 'admin'}"
+               href="/books/create">CreateBook</a>
         </ol>
         <!--        </nav>-->
     </div>
