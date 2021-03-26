@@ -19,8 +19,15 @@
             <a class="col-3"
                th:if="${role == 'admin'}"
                href="/books/create">CreateBook</a>
+
         </ol>
         <!--        </nav>-->
+        <a class="col-3"
+           th:if="${role == 'user'}"
+           href="/login">Login</a>
+        <a class="col-3"
+           th:if="${role != 'user'}"
+           href="/logout">Logout</a>
     </div>
 </nav>
 

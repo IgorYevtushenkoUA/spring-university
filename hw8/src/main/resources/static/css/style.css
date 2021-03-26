@@ -9,7 +9,7 @@
 /* main */
 
 .card {
-    height: 280px;
+    height: 100%;
     border: 2px solid #fbfafb;
     border-radius: 5px;
     background: #fbfafb;

@@ -19,36 +19,43 @@
                     <input class="input" type="text" name="bookName" placeholder="bookName" th:object="${bookName}">
                     <input class="input input-isbn" type="text" name="isbnName" placeholder="isbn"
                            th:object="${isbnName}">
-                    <button type="submit" class="btn btn-dark">Search</button>
+                    <button type="submit" class="btn btn-dark" name="search">Search</button>
                 </div>
             </form>
         </div>
         <div>
-            <table border="1">
-                <thead>
-                <tr>
-                    <th th:text="№"/>
-                    <th th:text="BOOK"/>
-                    <th th:if="${role == 'client'}" th:text="ADD"/>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="book, iStat : ${page.content}"
-                    th:style="${iStat.odd}? 'font-weight: bold;'"
-                    th:alt-title="${iStat.even}? 'even' : 'odd'">
-                    <td th:text="${book.getBookId()}"/>
-                    <td>
-                        <a th:text="${book.getName()}"
-                           th:href="@{/books/{id}(id=${book.getBookId()})}">
-                        </a>
-                    </td>
-                    <td th:if="${role == 'client'}">
-                        <button >ADD</button>
-                    </td>
+            <form action="/books" method="post">
+                <table border="1">
+                    <thead>
+                    <tr>
+                        <th th:text="№"/>
+                        <th th:text="BOOK"/>
+                        <th th:if="${role == 'client'}" th:text="ADD"/>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="book, iStat : ${page.content}"
+                        th:style="${iStat.odd}? 'font-weight: bold;'"
+                        th:alt-title="${iStat.even}? 'even' : 'odd'">
+                        <td th:text="${book.getBookId()}"/>
+                        <td>
+                            <a th:text="${book.getName()}"
+                               th:href="@{/books/{id}(id=${book.getBookId()})}">
+                            </a>
+                        </td>
+                        <td th:if="${role == 'client'}">
+                            <a
+                                   name="likebook"
+                                   th:text="ADD"
+                                   class="btn"
+                                   th:href="@{/books/liked/{id}/add (id=${book.getBookId()})}"
+                            />
+                        </td>
 
-                </tr>
-                </tbody>
-            </table>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
         </div>
         <div class="pagination"
              th:if="${page.totalPages > 0}"
@@ -59,18 +66,6 @@
                     th:class="${pageNumber==page.number} ? active"></a>
             </label>
         </div>
-
-
-        <!--        <div>-->
-        <!--            <a href="/books/create">-->
-        <!--                <strong> ADD BOOK </strong>-->
-        <!--            </a>-->
-        <!--        </div>-->
-
-        <div class="pagination">
-
-        </div>
-
     </div>
 
 </div>

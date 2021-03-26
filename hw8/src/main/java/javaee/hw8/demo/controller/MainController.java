@@ -32,6 +32,8 @@ public class MainController {
     private ClientService clientService;
 
     ClientEntity authClient;
+    Page<BookEntity> page;
+
 
     public void setTotalPage(Model model,
                              Page page) {
@@ -94,28 +96,34 @@ public class MainController {
     @GetMapping("/books")
     public String booksGet(@PageableDefault(size = 6) Pageable pageable, Model model) {
 
-        Page<BookEntity> page = bookService.findAllBooks(pageable);
+        page = bookService.findAllBooks(pageable);
 
         model.addAttribute("page", page);
         model.addAttribute("bookName", new String());
         model.addAttribute("isbnName", new String());
         model.addAttribute("role", getRole());
+        model.addAttribute("bookId", new String());
         setTotalPage(model, page);
         return "books";
     }
 
-    @PostMapping("/books")
-    public String booksPost(@PageableDefault(size = 6) Pageable pageable,
-                            @ModelAttribute("bookName") String bookName,
-                            @ModelAttribute("isbnName") String isbnName,
-                            @ModelAttribute("role") String role,
-                            Model model) {
+    @GetMapping("/books/liked/{id}/add")
+    public String addLikedBook(@PathVariable int id) {
 
+        BookEntity book = bookService.findAllBookById(id).orElse(null);
+        clientService.addFavouriteBook(authClient, book);
+        return "redirect:/books";
+    }
 
+    @PostMapping(value = "/books", params = "search")
+    public String booksPostSearch(@PageableDefault(size = 6) Pageable pageable,
+                                  @ModelAttribute("bookName") String bookName,
+                                  @ModelAttribute("isbnName") String isbnName,
+                                  @ModelAttribute("role") String role,
+                                  Model model) {
         model.addAttribute("bookName", bookName);
         model.addAttribute("isbnName", isbnName);
         model.addAttribute("role", role);
-        Page<BookEntity> page;
         if (isbnName.isEmpty() && bookName.isEmpty()) {
             page = bookService.findAllBooks(pageable);
         } else if (!isbnName.isEmpty() && bookName.isEmpty()) {
@@ -127,9 +135,11 @@ public class MainController {
         }
 
         model.addAttribute("page", page);
+        model.addAttribute("role", getRole());
         setTotalPage(model, page);
         return "books";
     }
+
 
     @GetMapping("/books/{id}")
     public String book(Model model, @PathVariable int id) {
@@ -160,7 +170,7 @@ public class MainController {
     @GetMapping("/books/liked/{id}/remove")
     public String favouriteBookPost(@PathVariable int id) {
         clientService.removeFavouriteBookById(authClient, id);
-        return "redirect:/favourite-books";
+        return "redirect:/books/liked";
     }
 
     @GetMapping("/books/create")
@@ -172,7 +182,7 @@ public class MainController {
         return "create_book";
     }
 
-    @PostMapping("/books/create")
+    @PostMapping(value = "/books/create")
     public String createBookPost(@ModelAttribute("book") BookEntity book,
                                  @ModelAttribute("authors") String authors,
                                  @ModelAttribute("role") String role,

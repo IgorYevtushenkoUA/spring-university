@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
 </head>
 <body>
+<div th:insert="navbar"></div>
+
 
 <div class="container">
-    <div th:insert="navbar"></div>
 
-    <from action="/favourite-books" method="post">
+    <from action="/books/liked" method="post">
         <div class="book-list">
             <div th:each="book,iterator :${client.getClientBooks()}">
                 <div>
@@ -20,9 +22,8 @@
                            th:href="@{/books/{id}(id=${book.getBookId()})}"></a></h3>
                 </div>
                 <a type="submit"
-                   th:href="'/favourite-books/' + ${book.getBookId()} + '/remove'"
-                   class="btn btn-primary"
-                   th:object="${bookId}">DELETE</a>
+                   th:href="'/books/liked/' + ${book.getBookId()} + '/remove'"
+                   class="btn btn-primary">DELETE</a>
             </div>
         </div>
     </from>
