@@ -1,8 +1,8 @@
-package com.example.hw8.service;
+package javaee.hw8.demo.service;
 
-import com.example.hw8.entity.AuthorEntity;
-import com.example.hw8.entity.BookEntity;
-import com.example.hw8.repository.AuthorRepository;
+import javaee.hw8.demo.entity.AuthorEntity;
+import javaee.hw8.demo.entity.BookEntity;
+import javaee.hw8.demo.repository.AuthorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

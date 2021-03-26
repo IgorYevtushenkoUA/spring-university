@@ -1,14 +1,15 @@
-package com.example.hw8.service;
+package javaee.hw8.demo.service;
 
-import com.example.hw8.entity.AuthorEntity;
-import com.example.hw8.entity.BookEntity;
-import com.example.hw8.repository.BookRepository;
+import javaee.hw8.demo.entity.AuthorEntity;
+import javaee.hw8.demo.entity.BookEntity;
+import javaee.hw8.demo.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.print.Book;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +22,10 @@ public class BookService {
 
     public Page<BookEntity> findAllBooks(Pageable pageable) {
         return bookRepository.findAll(pageable);
+    }
+
+    public Page<BookEntity> findBooksByISBN(String isbn, Pageable pageable) {
+        return bookRepository.findBooksByISBN('%' + isbn + '%', pageable);
     }
 
     public Optional<BookEntity> findAllBookById(Integer bookId) {
@@ -39,15 +44,17 @@ public class BookService {
         bookRepository.save(book);//saveAndFlush
     }
 
-    public Optional<BookEntity> findBookByISBN(String isbn) {
-        return bookRepository.findBookByISBN(isbn);
+
+    public Page<BookEntity> findBooksByNameLike(String name, Pageable pageable) {
+        return bookRepository.findBooksByNameLike('%' + name + '%', pageable);
     }
 
-    public Page<BookEntity> findBooksByNameLike(String name,Pageable pageable) {
-        return bookRepository.findBooksByNameLike(name,pageable);
+    public Page<BookEntity> findBooksByISBNAndName(String isbnName, String bookName, Pageable pageable) {
+        return bookRepository.findBooksByISBNAndName('%' + isbnName + '%', '%' + bookName + '%', pageable);
     }
 
-    public List<AuthorEntity> findBookAuthors(BookEntity book){
+
+    public List<AuthorEntity> findBookAuthors(BookEntity book) {
         return book.getAuthors();
     }
 

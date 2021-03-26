@@ -1,10 +1,10 @@
-package com.example.hw8;
+package javaee.hw8.demo;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class Hw8ApplicationTests {
+class DemoApplicationTests {
 
 	@Test
 	void contextLoads() {

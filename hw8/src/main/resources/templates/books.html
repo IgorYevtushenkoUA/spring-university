@@ -17,6 +17,8 @@
             <form action="/books" method="post">
                 <div class="filter-name">
                     <input class="input" type="text" name="bookName" placeholder="bookName" th:object="${bookName}">
+                    <input class="input input-isbn" type="text" name="isbnName" placeholder="isbn"
+                           th:object="${isbnName}">
                     <button type="submit" class="btn btn-dark">Search</button>
                 </div>
             </form>

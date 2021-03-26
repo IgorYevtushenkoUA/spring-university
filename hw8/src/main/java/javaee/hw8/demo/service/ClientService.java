@@ -1,14 +1,11 @@
-package com.example.hw8.service;
+package javaee.hw8.demo.service;
 
-import com.example.hw8.entity.BookEntity;
-import com.example.hw8.entity.ClientEntity;
-import com.example.hw8.entity.RoleEntity;
-import com.example.hw8.repository.ClientRepository;
+import javaee.hw8.demo.entity.BookEntity;
+import javaee.hw8.demo.entity.ClientEntity;
+import javaee.hw8.demo.repository.ClientRepository;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,6 +20,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @RequiredArgsConstructor
+//public class ClientService{
 public class ClientService implements UserDetailsService {
     @Getter
     @Setter

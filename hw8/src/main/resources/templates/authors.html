@@ -35,7 +35,7 @@
                     th:alt-title="${iStat.even}? 'even' : 'odd'">
                     <td th:text="${author.getAuthorId()}"/>
                     <td><a th:text="${author.getName()}"
-                           th:href="@{/author/{id}(id=${author.getAuthorId()})}"></a></td>
+                           th:href="@{/authors/{id}(id=${author.getAuthorId()})}"></a></td>
                 </tr>
                 </tbody>
             </table>

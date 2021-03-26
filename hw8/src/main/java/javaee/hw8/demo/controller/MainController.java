@@ -1,17 +1,15 @@
-package com.example.hw8.controller;
+package javaee.hw8.demo.controller;
 
-import com.example.hw8.entity.AuthorEntity;
-import com.example.hw8.entity.BookEntity;
-import com.example.hw8.entity.ClientEntity;
-import com.example.hw8.service.AuthorService;
-import com.example.hw8.service.BookService;
-import com.example.hw8.service.ClientService;
+import javaee.hw8.demo.entity.AuthorEntity;
+import javaee.hw8.demo.entity.BookEntity;
+import javaee.hw8.demo.entity.ClientEntity;
+import javaee.hw8.demo.service.AuthorService;
+import javaee.hw8.demo.service.BookService;
+import javaee.hw8.demo.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,8 +20,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
-public class MainController  {
-//public class MainController implements ErrorController {
+public class MainController {
 
     @Autowired
     private BookService bookService;
@@ -63,6 +60,7 @@ public class MainController  {
 
         Page<AuthorEntity> page = authorService.findAllAuthor(pageable);
         model.addAttribute("authorName", new String("have name----"));
+        model.addAttribute("isbnName", new String("have name----"));
         model.addAttribute("page", page);
         setTotalPage(model, page);
         return "authors";
@@ -71,8 +69,11 @@ public class MainController  {
     @PostMapping("/authors")
     public String authorsPost(@PageableDefault(size = 6) Pageable pageable,
                               @ModelAttribute("authorName") String authorName,
+                              @ModelAttribute("isbnName") String isbnName,
                               Model model) {
         model.addAttribute("authorName", authorName);
+        model.addAttribute("isbnName", isbnName);
+
         Page<AuthorEntity> page = authorName.isEmpty()
                 ? authorService.findAllAuthor(pageable)
                 : authorService.findAllAuthorByName('%' + authorName + '%', pageable);
@@ -88,6 +89,7 @@ public class MainController  {
         Page<BookEntity> page = bookService.findAllBooks(pageable);
         model.addAttribute("page", page);
         model.addAttribute("bookName", new String());
+        model.addAttribute("isbnName", new String());
         setTotalPage(model, page);
         return "books";
     }
@@ -95,12 +97,23 @@ public class MainController  {
     @PostMapping("/books")
     public String booksPost(@PageableDefault(size = 6) Pageable pageable,
                             @ModelAttribute("bookName") String bookName,
+                            @ModelAttribute("isbnName") String isbnName,
                             Model model) {
 
         model.addAttribute("bookName", bookName);
-        Page<BookEntity> page = bookName.isEmpty()
-                ? bookService.findAllBooks(pageable)
-                : bookService.findBooksByNameLike('%' + bookName + '%', pageable);
+        model.addAttribute("isbnName", isbnName);
+
+        Page<BookEntity> page;
+        if (isbnName.isEmpty() && bookName.isEmpty()) {
+            page = bookService.findAllBooks(pageable);
+        } else if (!isbnName.isEmpty() && bookName.isEmpty()) {
+            page = bookService.findBooksByISBN(isbnName, pageable);
+        } else if (isbnName.isEmpty() && !bookName.isEmpty()) {
+            page = bookService.findBooksByNameLike(bookName, pageable);
+        } else {
+            page = bookService.findBooksByISBNAndName(isbnName, bookName, pageable);
+        }
+
         model.addAttribute("page", page);
         setTotalPage(model, page);
         return "books";
@@ -124,36 +137,19 @@ public class MainController  {
         return "author";
     }
 
-    @GetMapping("/favourite-books")
+    @GetMapping("/books/liked")
     public String favouriteBooks(Model model) {
         authClient = clientService.findClientByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("client", authClient);
         return "favourite_books";
     }
 
-    @GetMapping("/favourite-books/{id}/remove")
+    @GetMapping("/books/liked/{id}/remove")
     public String favouriteBookPost(@PathVariable int id) {
         System.out.println("remove");
         clientService.removeFavouriteBookById(authClient, id);
         return "redirect:/favourite-books";
     }
-
-//    @GetMapping("/login")
-//    public String login(Model model) {
-//        System.out.println("login");
-//        model.addAttribute("username", new String());
-//        model.addAttribute("password", new String());
-//        return "login";
-//    }
-
-//    // #todo не заходить в пост і я не можу дістати нашого користувача у правильному місці
-//    @PostMapping("/login")
-//    public String loginPost(@ModelAttribute("username") String username, @ModelAttribute("password") String password) {
-//        System.out.println("NAME : " + username);
-//        System.out.println("loginPost");
-//        return "redirect:/books";
-//    }
-
 
     @GetMapping("/books/create")
     public String createBookGet(Model model) {
@@ -180,12 +176,5 @@ public class MainController  {
         return "";
     }
 
-//    @Override
-//    @RequestMapping("/error")
-//    @ResponseBody
-//    public String getErrorPath() {
-//        // TODO Auto-generated method stub
-//        return "No Mapping Found";
-//    }
 }
 

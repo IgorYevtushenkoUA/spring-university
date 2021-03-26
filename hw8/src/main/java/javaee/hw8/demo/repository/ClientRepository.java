@@ -1,7 +1,6 @@
-package com.example.hw8.repository;
+package javaee.hw8.demo.repository;
 
-import com.example.hw8.entity.BookEntity;
-import com.example.hw8.entity.ClientEntity;
+import javaee.hw8.demo.entity.ClientEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -1,4 +1,4 @@
-package com.example.hw8.config;
+package javaee.hw8.demo.config;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;

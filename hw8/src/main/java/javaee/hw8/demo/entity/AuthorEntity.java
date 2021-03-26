@@ -1,4 +1,4 @@
-package com.example.hw8.entity;
+package javaee.hw8.demo.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
