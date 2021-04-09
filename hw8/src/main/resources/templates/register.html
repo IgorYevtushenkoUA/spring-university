@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+
+<div th:insert="navbar"></div>
+
+
+<div class="container" style="padding-top: 8%;">
+
+    <div class="text-center ">
+        <div class="login-form justify-content-center" style="width: 65%; margin: auto">
+            <form action="/register" method="post" modelAttribute="client" th:object="${client}">
+                <div style="padding: 4%">
+                    <input class="form-control form-control-lg" path="name" name="name" type="text" placeholder="Name.."
+                           th:object="${client.name}">
+                    <input class="form-control form-control-lg mt-2" path="surname" name="surname" type="text"
+                           placeholder="Surname.."
+                           th:object="${client.surname}">
+                    <input class="form-control form-control-lg mt-2" path="phoneNumber" name="phoneNumber" type="text"
+                           placeholder="Phone number"
+                           th:object="${client.phoneNumber}">
+                    <input class="form-control form-control-lg mt-2" path="password" name="password" type="text"
+                           placeholder="Password"
+                           th:object="${client.password}">
+                    <input class="form-control form-control-lg mt-2" path="passwordConfirmed" name="password2" type="text"
+                           placeholder="Confirmed Password"
+                           th:object="${password2}">
+                </div>
+
+                <input class="btn btn-dark mb-3" type="submit" value="REGISTER">
+            </form>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

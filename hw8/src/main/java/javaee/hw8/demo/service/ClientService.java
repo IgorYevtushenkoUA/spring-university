@@ -13,14 +13,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.List;
+
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-//public class ClientService{
 public class ClientService implements UserDetailsService {
     @Getter
     @Setter
@@ -87,4 +85,17 @@ public class ClientService implements UserDetailsService {
                 .collect(Collectors.toList()));
         clientRepository.save(client);
     }
+
+    public ClientEntity findByPhoneNumber(String phoneNumber) {
+        return clientRepository.findByPhoneNumber(phoneNumber);
+    }
+
+    public boolean addNewClient(ClientEntity client) {
+        if (findByPhoneNumber(client.getPhoneNumber()) == null) {
+            clientRepository.save(client);
+            return true;
+        }
+        return false;
+    }
+
 }

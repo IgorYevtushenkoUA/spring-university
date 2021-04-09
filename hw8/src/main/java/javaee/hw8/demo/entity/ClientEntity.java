@@ -23,7 +23,7 @@ public class ClientEntity {
     private Integer clientId;
 
     @Column(name="role_id")
-    private String roleId;
+    private Integer roleId;
 
     @Column(name = "name")
     private String name;

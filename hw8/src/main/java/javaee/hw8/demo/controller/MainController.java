@@ -200,5 +200,26 @@ public class MainController {
         return "redirect:/books";
     }
 
+    @GetMapping("/register")
+    public String registerGet(Model model) {
+        model.addAttribute("client", new ClientEntity());
+        model.addAttribute("password2", "");
+        System.out.println("get Register");
+        return "register";
+    }
+
+    @PostMapping("/register")
+    public String registerPost(@ModelAttribute("client") ClientEntity client,
+                               @ModelAttribute("password2") String password2,
+                               Model model) {
+        model.addAttribute(client);
+        model.addAttribute(password2);
+        client.setRoleId(2);
+
+        clientService.addNewClient(client);
+
+        return "redirect:/";
+    }
+
 }
 

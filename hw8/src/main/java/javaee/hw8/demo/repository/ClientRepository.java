@@ -18,4 +18,7 @@ public interface ClientRepository extends JpaRepository<ClientEntity, Integer> {
     @Query("select c from ClientEntity  c where c.clientId=:clientId")
     ClientEntity findClientById(@Param("clientId") Integer clientId);
 
+    ClientEntity findByPhoneNumber(String phoneNumber);
+
+
 }
