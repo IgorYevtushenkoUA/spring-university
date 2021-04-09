@@ -1,5 +1,7 @@
 package javaee.hw8.demo.controller;
 
+import javaee.hw8.demo.dto.BookDto;
+import javaee.hw8.demo.dto.ClientDto;
 import javaee.hw8.demo.entity.AuthorEntity;
 import javaee.hw8.demo.entity.BookEntity;
 import javaee.hw8.demo.entity.ClientEntity;
@@ -13,8 +15,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -175,49 +179,68 @@ public class MainController {
 
     @GetMapping("/books/create")
     public String createBookGet(Model model) {
-        model.addAttribute("book", new BookEntity());
-        model.addAttribute("authors", "authorName");
+        model.addAttribute("book", new BookDto());
         model.addAttribute("role", getRole());
         System.out.println("create book");
         return "create_book";
     }
 
     @PostMapping(value = "/books/create")
-    public String createBookPost(@ModelAttribute("book") BookEntity book,
-                                 @ModelAttribute("authors") String authors,
+    public String createBookPost(@ModelAttribute("book") @Valid BookDto bookdto,
+                                 BindingResult bindingResult,
                                  @ModelAttribute("role") String role,
                                  Model model) {
 
-        model.addAttribute("authors", authors);
-        model.addAttribute("book", book);
+        if (bindingResult.hasErrors()){
+            System.out.println("error");
+            return "/books/create";
+        }
+        model.addAttribute("book", bookdto);
         model.addAttribute("role", role);
-        System.out.println("POST POST POST POST POST POST POST POST POST POST POST POST ");
+        BookEntity book = new BookEntity();
+        book.setIsbn(bookdto.getIsbn());
 
-//        for (String authorName : authors.split(",")) {
+
+//        for (String authorName : book.getAuthors().split(",")) {
 //            book.getAuthors().add(authorService.findAllAuthorByName(authorName).stream().findFirst().orElse(null));
 //        }
-//        bookService.addBook(book);
+
+        bookService.addBook(book);
         return "redirect:/books";
     }
 
     @GetMapping("/register")
     public String registerGet(Model model) {
-        model.addAttribute("client", new ClientEntity());
+        model.addAttribute("client", new ClientDto());
         model.addAttribute("password2", "");
         System.out.println("get Register");
         return "register";
     }
 
     @PostMapping("/register")
-    public String registerPost(@ModelAttribute("client") ClientEntity client,
+    public String registerPost(@ModelAttribute("client") @Valid ClientDto clientdto,
+                               BindingResult bindingResult,
                                @ModelAttribute("password2") String password2,
                                Model model) {
-        model.addAttribute(client);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute(clientdto);
+            model.addAttribute(password2);
+            System.out.println(clientdto.getName());
+            System.out.println("Has error");
+            return "/register";
+        }
+
+        model.addAttribute(clientdto);
         model.addAttribute(password2);
-        client.setRoleId(2);
+
+        ClientEntity client = new ClientEntity();
+        client.setRoleId(1);
+        client.setName(clientdto.getName());
+        client.setSurname(clientdto.getSurname());
+        client.setPhoneNumber(clientdto.getPhoneNumber());
+        client.setPassword(clientdto.getPassword());
 
         clientService.addNewClient(client);
-
         return "redirect:/";
     }
 

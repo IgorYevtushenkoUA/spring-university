@@ -13,8 +13,7 @@
             <form th:action="@{/login}" method="post" action="/login">
                 <div style="padding: 4%">
                     <input  class="form-control form-control-lg"
-
-                            value="client"
+                            value="admin"
 
                             type="text"
                             name="username"
@@ -23,13 +22,13 @@
                 </div>
                 <div style="padding: 4%">
                     <input  class="form-control form-control-lg"
-                            value="client"
-
+                            value="admin"
 
                             type="password"
                             name="password"
                             placeholder="password"
                             th:object="${password}"/>
+
                 </div>
                 <div style="padding-top: 5%; padding-bottom: 4%">
                     <input class="btn" type="submit" value="Sign In"/>

@@ -17,25 +17,29 @@
                 <div class="row mt-5">
                     <label class="col-4">Enter ISBN : </label>
                     <input class="col-8" type="text" name="isbn" placeholder="isbn" th:object="${book.isbn}">
+<!--                    <div th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}" class="error"></div>-->
                 </div>
                 <div class="row mt-2">
                     <label class="col-4">Enter Book : </label>
                     <input class="col-8" type="text" name="bookName" placeholder="book name" th:object="${book.name}">
+<!--                    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></div>-->
                 </div>
                 <div class="row mt-2">
                     <label class="col-4">Enter description : </label>
                     <input class="col-8" type="text" name="description" placeholder="description"
                            th:object="${book.description}">
+<!--                    <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="error"></div>-->
+
                 </div>
                 <div class="row mt-2">
                     <label class="col-4">Enter authors : </label>
-                    <input class="col-8" type="text" name="author" placeholder="author" th:object="${authors}">
+                    <input class="col-8" type="text" name="author" placeholder="author" th:object="${book.authors}">
+<!--                    <div th:if="${#fields.hasErrors('authors')}" th:errors="*{authors}" class="error"></div>-->
                     <label> if you have few authors please use commas</label>
                 </div>
             </div>
             <div class="col-12 d-flex justify-content-center mt-3">
                 <button type="submit" class="btn btn-primary">Add</button>
-                <button type="reset" class="btn btn-warning">Reset</button>
             </div>
 
         </form>

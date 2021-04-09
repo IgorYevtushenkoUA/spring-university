@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 
 @Getter
 @Setter
@@ -27,8 +24,11 @@ public class ClientDto {
     private String phoneNumber;
 
     @NotEmpty(message = "Password can't be empty")
-    @Min(value = 8, message = "Password to small")
-    @Max(value = 20, message = "Password to large")
-    private String password;
+    @Size(min = 8, max=20, message = "Incorrect password length")
+    public String password;
+
+    @NotEmpty(message = "Password can't be empty")
+    @Size(min = 8, max=20, message = "Incorrect password length")
+    private String password2;
 
 }

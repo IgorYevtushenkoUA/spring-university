@@ -17,20 +17,35 @@
         <div class="login-form justify-content-center" style="width: 65%; margin: auto">
             <form action="/register" method="post" modelAttribute="client" th:object="${client}">
                 <div style="padding: 4%">
+
                     <input class="form-control form-control-lg" path="name" name="name" type="text" placeholder="Name.."
-                           th:object="${client.name}">
+                           th:object="${client.name}" th:value="${client.getName()}">
+                    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></div>
+
                     <input class="form-control form-control-lg mt-2" path="surname" name="surname" type="text"
                            placeholder="Surname.."
-                           th:object="${client.surname}">
+                           th:object="${client.surname}"
+                           th:value="${client.getSurname()}">
+                    <div th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}" class="error"></div>
+
                     <input class="form-control form-control-lg mt-2" path="phoneNumber" name="phoneNumber" type="text"
                            placeholder="Phone number"
-                           th:object="${client.phoneNumber}">
-                    <input class="form-control form-control-lg mt-2" path="password" name="password" type="text"
+                           th:object="${client.phoneNumber}"
+                           th:value="${client.getPhoneNumber()}">
+                    <div th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="error"></div>
+
+                    <input class="form-control form-control-lg mt-2" path="password" name="password" type="password"
                            placeholder="Password"
-                           th:object="${client.password}">
-                    <input class="form-control form-control-lg mt-2" path="passwordConfirmed" name="password2" type="text"
+                           th:object="${client.password}"
+                           th:value="${client.getPassword()}">
+                    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error"></div>
+
+                    <input class="form-control form-control-lg mt-2" path="passwordConfirmed" name="password2" type="password"
                            placeholder="Confirmed Password"
-                           th:object="${password2}">
+                           th:object="${password2}"
+                           th:value="${password2}">
+                    <div th:if="${#fields.hasErrors('password2')}" th:errors="*{password2}" class="error"></div>
+
                 </div>
 
                 <input class="btn btn-dark mb-3" type="submit" value="REGISTER">
